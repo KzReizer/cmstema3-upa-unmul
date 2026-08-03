@@ -28,7 +28,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <span><i class="fa fa-tag"></i> <?= $datas!=false?$datas->{'kontenTag'.$lang}:"" ?></span>
                     </div>
                     <div class="cms-detail-body">
-                        <p><?= $datas!=false?$datas->{'kontenIsi'.$lang}:"" ?></p>
+                        <?= $datas != false ? $datas->{'kontenIsi'.$lang} : "" ?>
                     </div>
                 </div>
             </div>
