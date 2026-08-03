@@ -464,13 +464,14 @@
     initSmoothScroll();
     initOverflowMenu();
     initNavIndicator();
+    initDropdownBehavior();
     initScrollReveal();
     initSkeletons();
     initSearchOverlay();
     initLanguageDropdown();
 
-    // Recompute overflow when fonts/layout settle
-    setTimeout(initOverflowMenu, 300);
+    // Recompute overflow & dropdowns when fonts/layout settle
+    setTimeout(function(){ initOverflowMenu(); initDropdownBehavior(); }, 300);
   });
 
   // Re-initialize on AJAX page loads
@@ -478,8 +479,133 @@
     initCounters();
     initOverflowMenu();
     initNavIndicator();
+    initDropdownBehavior();
     initScrollReveal();
   });
+
+  /* -------------------------------------------
+     Dropdown behavior (recursive, hover/click)
+     ------------------------------------------- */
+  function initDropdownBehavior() {
+    const nav = document.querySelector('.cms-navbar-nav');
+    if (!nav) return;
+
+    const isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+
+    // find all li that have submenu (either .cms-dropdown-menu or a direct ul)
+    const items = Array.from(nav.querySelectorAll('li'));
+
+    items.forEach(li => {
+      // skip if already processed
+      if (li.dataset.dropdownInitialized) return;
+      li.dataset.dropdownInitialized = '1';
+
+      const submenu = li.querySelector(':scope > .cms-dropdown-menu, :scope > ul');
+      if (!submenu) return; // no children
+
+      li.classList.add('has-children');
+      li.setAttribute('aria-haspopup', 'true');
+
+      // ensure submenu has proper class reference
+      const menuEl = submenu.classList && submenu.classList.contains('cms-dropdown-menu') ? submenu : (function(){
+        // if it's a UL, wrap into cms-dropdown-menu div for consistent styling
+        const wrapper = document.createElement('div');
+        wrapper.className = 'cms-dropdown-menu';
+        wrapper.appendChild(submenu);
+        li.appendChild(wrapper);
+        return wrapper;
+      })();
+
+      // For keyboard and click accessibility, add a toggle button behavior on the top-level anchor
+      const trigger = li.querySelector(':scope > a');
+      if (trigger) {
+        trigger.setAttribute('aria-expanded', 'false');
+        // prevent link navigation on items that only open submenu on click for touch/devices
+      }
+
+      // setup open/close functions with safe hover delay
+      let openTimer = null, closeTimer = null;
+      function openMenu() {
+        clearTimeout(closeTimer);
+        clearTimeout(openTimer);
+        // compute direction: default right, but if overflow then open left
+        menuEl.classList.remove('open-left');
+        menuEl.classList.add('is-open');
+        li.classList.add('open');
+        if (trigger) trigger.setAttribute('aria-expanded', 'true');
+
+        // position check: only for absolute positioned nested menus
+        try {
+          const rect = menuEl.getBoundingClientRect();
+          const rightOverflow = rect.right > (window.innerWidth - 8);
+          const leftOverflow = rect.left < 8;
+          if (rightOverflow && !leftOverflow) {
+            menuEl.classList.add('open-left');
+          }
+        } catch (e) {}
+      }
+      function closeMenu() {
+        clearTimeout(openTimer);
+        clearTimeout(closeTimer);
+        menuEl.classList.remove('is-open');
+        li.classList.remove('open');
+        if (trigger) trigger.setAttribute('aria-expanded', 'false');
+      }
+
+      // Mouse interactions (desktop)
+      if (!isTouch) {
+        li.addEventListener('mouseenter', function() {
+          clearTimeout(closeTimer);
+          openTimer = setTimeout(openMenu, 160);
+        });
+        li.addEventListener('mouseleave', function() {
+          clearTimeout(openTimer);
+          closeTimer = setTimeout(closeMenu, 200);
+        });
+
+        // Make submenu itself react to mouseenter to avoid flicker when moving pointer between parent and submenu
+        menuEl.addEventListener('mouseenter', function() {
+          clearTimeout(closeTimer);
+        });
+        menuEl.addEventListener('mouseleave', function() {
+          closeTimer = setTimeout(closeMenu, 200);
+        });
+      }
+
+      // Click interactions for touch or narrow screens
+      trigger.addEventListener('click', function(e) {
+        // if viewport is mobile or touch, toggle
+        if (isTouch || window.innerWidth <= 991) {
+          e.preventDefault();
+          if (menuEl.classList.contains('is-open')) {
+            closeMenu();
+          } else {
+            // close sibling open menus (accordion behavior)
+            const parentUl = li.parentElement;
+            if (parentUl) {
+              Array.from(parentUl.querySelectorAll(':scope > li.open')).forEach(sib => { if (sib !== li) sib.classList.remove('open'); sib.querySelectorAll('.cms-dropdown-menu.is-open').forEach(m => m.classList.remove('is-open')); });
+            }
+            openMenu();
+          }
+        }
+      });
+
+      // keyboard support
+      if (trigger) {
+        trigger.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            if (menuEl.classList.contains('is-open')) closeMenu(); else openMenu();
+          } else if (e.key === 'Escape') {
+            closeMenu();
+          }
+        });
+      }
+
+      // process nested items recursively (find children inside this submenu)
+      // We intentionally don't call recursively here since initialization loop covers all LIs globally
+    });
+  }
 
 })(jQuery);
 

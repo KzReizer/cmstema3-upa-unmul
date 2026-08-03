@@ -340,7 +340,8 @@ img {
 
 /* when visible, allow pointer events */
 .cms-navbar-nav > li:hover .cms-dropdown-menu,
-.cms-nav-more.open .more-dropdown {
+.cms-nav-more.open .more-dropdown,
+.cms-dropdown-menu.is-open {
   pointer-events: auto;
 }
 
@@ -355,12 +356,96 @@ img {
   white-space: nowrap;
 }
 
+/* Ensure nested dropdowns are positioned to the right by default */
+.cms-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(6px);
+  transition: opacity 200ms ease, transform 200ms ease;
+  z-index: 1100;
+  pointer-events: none; /* enabled when visible */
+  min-width: 200px;
+}
+
+.cms-dropdown-menu .cms-dropdown-menu {
+  top: 0;
+  left: 100%;
+  transform: translateX(8px) translateY(0);
+}
+
+/* when submenu is opened use class is-open */
+.cms-dropdown-menu.is-open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* submenu to the left when .open-left is applied */
+.cms-dropdown-menu.open-left {
+  left: auto;
+  right: 100%;
+}
+
+/* item that has children indicator */
+.cms-navbar-nav li.has-children > a::after,
+.cms-dropdown-menu li.has-children > a::after {
+  content: '▶';
+  display: inline-block;
+  margin-left: 8px;
+  font-size: 0.7rem;
+  transform: translateY(0);
+  transition: transform 200ms ease;
+}
+
+/* rotate arrow when open */
+.cms-navbar-nav li.has-children.open > a::after,
+.cms-dropdown-menu li.has-children.open > a::after {
+  content: '▼';
+  transform: translateY(0);
+}
+
+/* ensure nested menus look like floating panels */
+.cms-dropdown-menu {
+  background: var(--cms-bg-card);
+  border-radius: var(--cms-radius-md);
+  box-shadow: var(--cms-shadow-lg);
+  padding: 8px 0;
+  border: 1px solid var(--cms-glass-border);
+}
+
+/* hover safe area improvements: increase hit area for li containing submenu */
+.cms-navbar-nav li.has-children {
+  position: relative;
+}
+
+/* Mobile: make submenu behave like accordion */
+@media (max-width: 991px) {
+  .cms-dropdown-menu {
+    position: static;
+    transform: none;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    display: none;
+  }
+  .cms-dropdown-menu.is-open {
+    display: block;
+  }
+  .cms-navbar-nav li.has-children > a::after {
+    content: '\25BC'; /* down arrow */
+    float: right;
+  }
+}
+
 /* Make navbar actions (search/lang) sit above dropdowns so always clickable */
 .cms-navbar-actions {
   display: flex;
   align-items: center;
   gap: 8px;
-  z-index: 1200;
+  z-index: 1300;
 }
 
 /* Navbar Actions */
