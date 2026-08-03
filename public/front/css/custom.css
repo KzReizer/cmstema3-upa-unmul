@@ -317,6 +317,33 @@ img {
   padding-left: 24px;
 }
 
+/* More dropdown styling (overflow) */
+.cms-nav-more {
+  position: relative;
+}
+
+.cms-nav-more > a.dropdown-item {
+  display: flex;
+  align-items: center;
+}
+
+.cms-nav-more .more-dropdown {
+  right: 0;
+  left: auto;
+  min-width: 200px;
+}
+
+.cms-nav-more.open .more-dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.cms-dropdown-menu.more-dropdown a {
+  padding: 8px 16px;
+  white-space: nowrap;
+}
+
 /* Navbar Actions */
 .cms-navbar-actions {
   display: flex;

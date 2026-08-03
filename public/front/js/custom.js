@@ -340,6 +340,83 @@
   }
 
   /* -------------------------------------------
+     12. Overflow / Responsive Menu
+     ------------------------------------------- */
+  function initOverflowMenu() {
+    const nav = document.querySelector('.cms-navbar-nav');
+    if (!nav) return;
+
+    const MAX_VISIBLE = 6;
+
+    // Restore any existing items moved into More
+    const existingMore = nav.querySelector('.cms-nav-more');
+    if (existingMore) {
+      const moved = Array.from(existingMore.querySelectorAll('a[data-moved]'));
+      moved.forEach(a => {
+        const li = document.createElement('li');
+        li.appendChild(a.cloneNode(true));
+        nav.insertBefore(li, existingMore);
+      });
+      existingMore.remove();
+    }
+
+    // Collect top-level menu items
+    const items = Array.from(nav.querySelectorAll(':scope > li'));
+    if (items.length <= MAX_VISIBLE) return;
+
+    // Move extras into More dropdown
+    const visible = items.slice(0, MAX_VISIBLE);
+    const extras = items.slice(MAX_VISIBLE);
+
+    const moreLi = document.createElement('li');
+    moreLi.className = 'cms-nav-more dropdown';
+
+    const moreToggle = document.createElement('a');
+    moreToggle.href = 'javascript:void(0)';
+    moreToggle.className = 'dropdown-item dropdown-toggle';
+    moreToggle.setAttribute('aria-haspopup', 'true');
+    moreToggle.setAttribute('aria-expanded', 'false');
+    moreToggle.textContent = 'More ▾';
+
+    const moreMenu = document.createElement('div');
+    moreMenu.className = 'cms-dropdown-menu more-dropdown';
+
+    extras.forEach(exLi => {
+      // try to find anchor inside exLi
+      const a = exLi.querySelector('a');
+      if (!a) return;
+      const clone = document.createElement('a');
+      clone.href = a.getAttribute('href') || 'javascript:void(0)';
+      clone.textContent = a.textContent.trim();
+      clone.className = 'dropdown-item';
+      clone.setAttribute('role', 'menuitem');
+      clone.setAttribute('data-moved', '1');
+      moreMenu.appendChild(clone);
+      exLi.remove();
+    });
+
+    moreLi.appendChild(moreToggle);
+    moreLi.appendChild(moreMenu);
+    nav.appendChild(moreLi);
+
+    // Toggle behavior
+    moreToggle.addEventListener('click', function(e) {
+      e.stopPropagation();
+      moreLi.classList.toggle('open');
+      const expanded = moreLi.classList.contains('open');
+      moreToggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+    });
+
+    // Close when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!moreLi.contains(e.target)) {
+        moreLi.classList.remove('open');
+        moreToggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+
+  /* -------------------------------------------
      12. Initialize Everything
      ------------------------------------------- */
   $(document).ready(function() {
@@ -350,15 +427,22 @@
     initCounters();
     initHeroStats();
     initSmoothScroll();
+    initOverflowMenu();
+    initNavIndicator();
     initScrollReveal();
     initSkeletons();
     initSearchOverlay();
     initLanguageDropdown();
+
+    // Recompute overflow when fonts/layout settle
+    setTimeout(initOverflowMenu, 300);
   });
 
   // Re-initialize on AJAX page loads
   $(document).on('ajaxComplete', function() {
     initCounters();
+    initOverflowMenu();
+    initNavIndicator();
     initScrollReveal();
   });
 
