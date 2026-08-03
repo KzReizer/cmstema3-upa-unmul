@@ -604,27 +604,28 @@
           trigger.setAttribute('aria-haspopup', 'true');
         }
 
-        // Click handling (touch / mobile / accordion)
+        // Click handling: toggle submenu on click (desktop + touch). Use preventDefault for submenu parents.
         if (trigger) {
           trigger.addEventListener('click', function(e) {
-            if (isTouch || isMobile()) {
-              e.preventDefault();
-              if (menuEl.classList.contains('is-open')) {
-                closeMenu(li, menuEl);
-              } else {
-                // close sibling open menus (accordion)
-                const parentUl = li.parentElement;
-                if (parentUl) {
-                  Array.from(parentUl.querySelectorAll(':scope > li.open')).forEach(sib => {
-                    if (sib !== li) {
-                      const sm = sib.querySelector(':scope > .cms-dropdown-menu');
-                      closeMenu(sib, sm);
-                    }
-                  });
-                }
-                openMenu(li, menuEl);
+            // Prevent the default anchor behavior for items that have submenus
+            e.preventDefault();
+
+            if (menuEl.classList.contains('is-open')) {
+              closeMenu(li, menuEl);
+            } else {
+              // close sibling open menus (accordion-like behavior)
+              const parentUl = li.parentElement;
+              if (parentUl) {
+                Array.from(parentUl.querySelectorAll(':scope > li.open')).forEach(sib => {
+                  if (sib !== li) {
+                    const sm = sib.querySelector(':scope > .cms-dropdown-menu');
+                    closeMenu(sib, sm);
+                  }
+                });
               }
+              openMenu(li, menuEl);
             }
+
           });
 
           // Keyboard support
@@ -641,40 +642,38 @@
       });
     }
 
-    // Attach delegated listeners only once (this function runs multiple times).
-    if (nav.dataset.dropdownDelegateAttached) {
+    // Ensure init runs for newly added items; avoid attaching duplicate delegated handlers
+    if (nav.dataset.dropdownInitializedOnce) {
       // still (re)initialize any newly moved items (e.g. More overflow)
       initItems();
       return;
     }
-    nav.dataset.dropdownDelegateAttached = '1';
+    nav.dataset.dropdownInitializedOnce = '1';
 
-    // Attach delegated listeners so newly added items (e.g. More overflow) work too.
-    nav.addEventListener('mouseover', function(e) {
-      // Handle mouseenter on any li that has a submenu
-      const li = e.target.closest('li');
-      if (!li || li.dataset.dropdownInitialized !== '1') return;
-      if (isTouch || isMobile()) return;
-      const submenu = li.querySelector(':scope > .cms-dropdown-menu');
-      if (!submenu) return;
-      clearTimeout(li._closeTimer);
-      li._openTimer = setTimeout(() => openMenu(li, submenu), 160);
-    });
-
-    nav.addEventListener('mouseout', function(e) {
-      const li = e.target.closest('li');
-      if (!li || li.dataset.dropdownInitialized !== '1') return;
-      if (isTouch || isMobile()) return;
-      const submenu = li.querySelector(':scope > .cms-dropdown-menu');
-      if (!submenu) return;
-      // Only close when leaving the whole li (including submenu safe area)
-      if (li.contains(e.relatedTarget)) return;
-      clearTimeout(li._openTimer);
-      li._closeTimer = setTimeout(() => closeMenu(li, submenu), 200);
-    });
-
-    // Initialize all existing li elements (including nested ones)
+    // Initialize items (this also ensures newly moved items are initialized)
     initItems();
+
+    // Attach per-item hover listeners for non-touch devices (more reliable than delegated mouseover/mouseout)
+    Array.from(nav.querySelectorAll('li')).forEach(li => {
+      // skip the overflow 'More' wrapper - it has its own handlers in initOverflowMenu
+      if (li.classList && li.classList.contains('cms-nav-more')) return;
+      if (li._hoverHandlersAttached) return;
+      li._hoverHandlersAttached = true;
+      if (!isTouch && !isMobile()) {
+        li.addEventListener('mouseenter', function() {
+          const submenu = li.querySelector(':scope > .cms-dropdown-menu');
+          if (!submenu) return;
+          clearTimeout(li._closeTimer);
+          li._openTimer = setTimeout(() => openMenu(li, submenu), 160);
+        });
+        li.addEventListener('mouseleave', function() {
+          const submenu = li.querySelector(':scope > .cms-dropdown-menu');
+          if (!submenu) return;
+          clearTimeout(li._openTimer);
+          li._closeTimer = setTimeout(() => closeMenu(li, submenu), 200);
+        });
+      }
+    });
 
     // Close all when clicking outside the nav (attach once)
     if (!nav.dataset.dropdownDocClickAttached) {

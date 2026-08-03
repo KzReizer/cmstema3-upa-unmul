@@ -200,7 +200,7 @@
                     ?>
                         <li>
                             <a href="#" class="<?= $row['headId'] == $is_active ? 'active' : '' ?>">
-                                <?= $row['headNama'] ?> <i class="fa fa-angle-down" style="margin-left:4px;font-size:10px;"></i>
+                                <?= $row['headNama'] ?>
                             </a>
                             <div class="cms-dropdown-menu">
                                 <?php
@@ -223,7 +223,7 @@
             <?php if ($master->temaPub != NULL) { ?>
                 <li>
                     <a href="#" class="<?php echo $is_active == 'publikasi' ? 'active' : ''; ?>">
-                        <?= $lang == 'ID' ? 'Publikasi' : 'Publication' ?> <i class="fa fa-angle-down" style="margin-left:4px;font-size:10px;"></i>
+                        <?= $lang == 'ID' ? 'Publikasi' : 'Publication' ?>
                     </a>
                     <div class="cms-dropdown-menu">
                         <?php
@@ -243,7 +243,7 @@
 
             <li>
                 <a href="#" class="<?php echo $is_active == 'ragam' ? 'active' : ''; ?>">
-                    <?= $lang == 'ID' ? 'Informasi' : 'Information' ?> <i class="fa fa-angle-down" style="margin-left:4px;font-size:10px;"></i>
+                    <?= $lang == 'ID' ? 'Informasi' : 'Information' ?>
                 </a>
                 <div class="cms-dropdown-menu">
                     <?php if ($master->temaIKU == '1') { ?>

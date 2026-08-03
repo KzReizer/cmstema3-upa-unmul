@@ -278,6 +278,11 @@ img {
   background: var(--cms-primary-light);
 }
 
+/* Hide any leftover font-awesome angle-down icons inside cms-navbar (use CSS pseudo arrow instead) */
+.cms-navbar .fa-angle-down {
+  display: none;
+}
+
 /* Dropdown */
 .cms-dropdown-menu {
   position: absolute;
@@ -293,7 +298,7 @@ img {
   transform: translateY(8px);
   transition: opacity 200ms ease, transform 200ms ease, visibility 200ms ease;
   border: 1px solid var(--cms-glass-border);
-  z-index: 1100;
+  z-index: 1400;
   pointer-events: none; /* enabled when visible */
 }
 
@@ -335,8 +340,11 @@ img {
 }
 
 /* item that has children indicator */
-.cms-navbar-nav li.has-children > a::after,
+.cms-navbar-nav > li.has-children > a::after,
 .cms-dropdown-menu li.has-children > a::after {
+  /* show a small pointer for top-level nav items and nested dropdown items
+     but avoid adding arrows to items inside the 'More' panel (they are not
+     direct children of .cms-navbar-nav). */
   content: '▶';
   display: inline-block;
   margin-left: 8px;
@@ -366,6 +374,14 @@ img {
   right: 0;
   left: auto;
   min-width: 200px;
+  z-index: 1450;
+}
+
+.cms-nav-more.open .more-dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
 }
 
 .cms-dropdown-menu.more-dropdown a {
