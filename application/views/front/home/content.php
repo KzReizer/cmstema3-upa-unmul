@@ -49,10 +49,14 @@
                     <div class="cms-profile-image">
                         <?php if ($logounit != false) {
                             foreach ($logounit as $lgu) { ?>
-                                <img src="<?= $lgu->galeriFiles ?>" alt="<?= $master->{'temaNama' . $lang} ?>">
+                                <div class="hero-photo-card">
+                                    <img class="hero-photo-img" src="<?= $lgu->galeriFiles ?>" alt="<?= $master->{'temaNama' . $lang} ?>" loading="lazy">
+                                </div>
                         <?php }
                         } else { ?>
-                            <img src="https://via.placeholder.com/600x400/005BAC/ffffff?text=Faculty+of+Agriculture" alt="Faculty">
+                            <div class="hero-photo-card">
+                                <img class="hero-photo-img" src="https://via.placeholder.com/600x400/005BAC/ffffff?text=Faculty+of+Agriculture" alt="Faculty" loading="lazy">
+                            </div>
                         <?php } ?>
                     </div>
                 </div>

@@ -385,7 +385,8 @@
     moreToggle.className = 'dropdown-item dropdown-toggle';
     moreToggle.setAttribute('aria-haspopup', 'true');
     moreToggle.setAttribute('aria-expanded', 'false');
-    moreToggle.textContent = 'More ▾';
+    // Use plain label; caret is provided via CSS ::after. Avoid adding extra glyphs here.
+    moreToggle.textContent = 'More';
 
     const moreMenu = document.createElement('div');
     moreMenu.className = 'cms-dropdown-menu more-dropdown';
