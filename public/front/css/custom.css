@@ -317,6 +317,11 @@ img {
   padding-left: 24px;
 }
 
+/* Ensure dropdowns do not block clicks when hidden */
+.cms-dropdown-menu {
+  pointer-events: none;
+}
+
 /* More dropdown styling (overflow) */
 .cms-nav-more {
   position: relative;
@@ -333,6 +338,12 @@ img {
   min-width: 200px;
 }
 
+/* when visible, allow pointer events */
+.cms-navbar-nav > li:hover .cms-dropdown-menu,
+.cms-nav-more.open .more-dropdown {
+  pointer-events: auto;
+}
+
 .cms-nav-more.open .more-dropdown {
   opacity: 1;
   visibility: visible;
@@ -342,6 +353,14 @@ img {
 .cms-dropdown-menu.more-dropdown a {
   padding: 8px 16px;
   white-space: nowrap;
+}
+
+/* Make navbar actions (search/lang) sit above dropdowns so always clickable */
+.cms-navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 1200;
 }
 
 /* Navbar Actions */

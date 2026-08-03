@@ -348,15 +348,24 @@
 
     const MAX_VISIBLE = 6;
 
-    // Restore any existing items moved into More
+    // Restore any existing items moved into More (if present)
     const existingMore = nav.querySelector('.cms-nav-more');
     if (existingMore) {
-      const moved = Array.from(existingMore.querySelectorAll('a[data-moved]'));
-      moved.forEach(a => {
-        const li = document.createElement('li');
-        li.appendChild(a.cloneNode(true));
-        nav.insertBefore(li, existingMore);
-      });
+      const movedList = existingMore.querySelector('.more-dropdown ul');
+      if (movedList) {
+        // move each li back before the More button
+        Array.from(movedList.children).forEach(li => {
+          nav.insertBefore(li, existingMore);
+        });
+      } else {
+        // fallback for older format: anchors with data-moved
+        const moved = Array.from(existingMore.querySelectorAll('a[data-moved]'));
+        moved.forEach(a => {
+          const li = document.createElement('li');
+          li.appendChild(a.cloneNode(true));
+          nav.insertBefore(li, existingMore);
+        });
+      }
       existingMore.remove();
     }
 
@@ -381,37 +390,63 @@
     const moreMenu = document.createElement('div');
     moreMenu.className = 'cms-dropdown-menu more-dropdown';
 
+    // create a list container to hold moved <li> nodes (preserve submenus & events)
+    const movedUl = document.createElement('ul');
+    movedUl.style.listStyle = 'none';
+    movedUl.style.margin = '0';
+    movedUl.style.padding = '8px 0';
+
     extras.forEach(exLi => {
-      // try to find anchor inside exLi
-      const a = exLi.querySelector('a');
-      if (!a) return;
-      const clone = document.createElement('a');
-      clone.href = a.getAttribute('href') || 'javascript:void(0)';
-      clone.textContent = a.textContent.trim();
-      clone.className = 'dropdown-item';
-      clone.setAttribute('role', 'menuitem');
-      clone.setAttribute('data-moved', '1');
-      moreMenu.appendChild(clone);
-      exLi.remove();
+      // move the whole <li> into the movedUl so submenus remain intact
+      movedUl.appendChild(exLi);
     });
 
+    moreMenu.appendChild(movedUl);
     moreLi.appendChild(moreToggle);
     moreLi.appendChild(moreMenu);
     nav.appendChild(moreLi);
 
-    // Toggle behavior
+    // Toggle and hover behavior
+    function openMore() {
+      moreLi.classList.add('open');
+      moreToggle.setAttribute('aria-expanded', 'true');
+      moreMenu.style.pointerEvents = 'auto';
+    }
+    function closeMore() {
+      moreLi.classList.remove('open');
+      moreToggle.setAttribute('aria-expanded', 'false');
+      moreMenu.style.pointerEvents = 'none';
+    }
+
+    // click still toggles (for touch support)
     moreToggle.addEventListener('click', function(e) {
       e.stopPropagation();
-      moreLi.classList.toggle('open');
-      const expanded = moreLi.classList.contains('open');
-      moreToggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+      if (moreLi.classList.contains('open')) closeMore(); else openMore();
+    });
+
+    // Hover (open on hover, small delay to avoid flicker)
+    let hoverTimer = null;
+    moreLi.addEventListener('mouseenter', function() {
+      clearTimeout(hoverTimer);
+      openMore();
+    });
+    moreLi.addEventListener('mouseleave', function() {
+      hoverTimer = setTimeout(closeMore, 200);
+    });
+
+    // Keyboard accessibility
+    moreToggle.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeMore();
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        if (moreLi.classList.contains('open')) closeMore(); else openMore();
+      }
     });
 
     // Close when clicking outside
     document.addEventListener('click', function(e) {
       if (!moreLi.contains(e.target)) {
-        moreLi.classList.remove('open');
-        moreToggle.setAttribute('aria-expanded', 'false');
+        closeMore();
       }
     });
   }
