@@ -483,6 +483,51 @@
     initScrollReveal();
   });
 
+/* -------------------------------------------
+     Navbar active indicator (pill underline)
+     ------------------------------------------- */
+  function initNavIndicator() {
+    const nav = document.querySelector('.cms-navbar-nav');
+    if (!nav) return;
+
+    // Remove any stale indicator element
+    const existing = nav.querySelector('.cms-nav-indicator');
+    if (existing) existing.remove();
+
+    // Find the active top-level item
+    const items = Array.from(nav.querySelectorAll(':scope > li'));
+    const active = items.find(li => {
+      const a = li.querySelector(':scope > a');
+      return a && (a.classList.contains('active') || (a.getAttribute('href') && a.getAttribute('href') === window.location.pathname));
+    });
+
+    if (!active) return;
+
+    // Create a small indicator that follows the active item
+    const indicator = document.createElement('span');
+    indicator.className = 'cms-nav-indicator';
+    nav.appendChild(indicator);
+
+    const position = () => {
+      const a = active.querySelector(':scope > a');
+      if (!a) return;
+      const navRect = nav.getBoundingClientRect();
+      const aRect = a.getBoundingClientRect();
+      indicator.style.left = (aRect.left - navRect.left) + 'px';
+      indicator.style.width = aRect.width + 'px';
+      indicator.style.top = (aRect.top - navRect.top) + 'px';
+    };
+
+    position();
+    window.addEventListener('resize', position);
+    window.addEventListener('load', position);
+
+    // Only show on desktop
+    if (window.innerWidth <= 991) {
+      indicator.style.display = 'none';
+    }
+  }
+
   /* -------------------------------------------
      Dropdown behavior (recursive, hover/click)
      ------------------------------------------- */
@@ -491,50 +536,21 @@
     if (!nav) return;
 
     const isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+    const isMobile = () => window.innerWidth <= 991;
 
-    // find all li that have submenu (either .cms-dropdown-menu or a direct ul)
-    const items = Array.from(nav.querySelectorAll('li'));
-
-    items.forEach(li => {
-      // skip if already processed
-      if (li.dataset.dropdownInitialized) return;
-      li.dataset.dropdownInitialized = '1';
-
-      const submenu = li.querySelector(':scope > .cms-dropdown-menu, :scope > ul');
-      if (!submenu) return; // no children
-
-      li.classList.add('has-children');
-      li.setAttribute('aria-haspopup', 'true');
-
-      // ensure submenu has proper class reference
-      const menuEl = submenu.classList && submenu.classList.contains('cms-dropdown-menu') ? submenu : (function(){
-        // if it's a UL, wrap into cms-dropdown-menu div for consistent styling
-        const wrapper = document.createElement('div');
-        wrapper.className = 'cms-dropdown-menu';
-        wrapper.appendChild(submenu);
-        li.appendChild(wrapper);
-        return wrapper;
-      })();
-
-      // For keyboard and click accessibility, add a toggle button behavior on the top-level anchor
+    // Open helper
+    function openMenu(li, menuEl) {
+      if (!menuEl) return;
+      clearTimeout(li._closeTimer);
+      clearTimeout(li._openTimer);
+      menuEl.classList.remove('open-left');
+      menuEl.classList.add('is-open');
+      li.classList.add('open');
       const trigger = li.querySelector(':scope > a');
-      if (trigger) {
-        trigger.setAttribute('aria-expanded', 'false');
-        // prevent link navigation on items that only open submenu on click for touch/devices
-      }
+      if (trigger) trigger.setAttribute('aria-expanded', 'true');
 
-      // setup open/close functions with safe hover delay
-      let openTimer = null, closeTimer = null;
-      function openMenu() {
-        clearTimeout(closeTimer);
-        clearTimeout(openTimer);
-        // compute direction: default right, but if overflow then open left
-        menuEl.classList.remove('open-left');
-        menuEl.classList.add('is-open');
-        li.classList.add('open');
-        if (trigger) trigger.setAttribute('aria-expanded', 'true');
-
-        // position check: only for absolute positioned nested menus
+      // Auto-flip to left if the submenu would overflow right edge
+      requestAnimationFrame(() => {
         try {
           const rect = menuEl.getBoundingClientRect();
           const rightOverflow = rect.right > (window.innerWidth - 8);
@@ -543,68 +559,135 @@
             menuEl.classList.add('open-left');
           }
         } catch (e) {}
-      }
-      function closeMenu() {
-        clearTimeout(openTimer);
-        clearTimeout(closeTimer);
+      });
+    }
+
+    // Close helper
+    function closeMenu(li, menuEl) {
+      if (!li) return;
+      clearTimeout(li._openTimer);
+      clearTimeout(li._closeTimer);
+      if (menuEl) {
         menuEl.classList.remove('is-open');
-        li.classList.remove('open');
-        if (trigger) trigger.setAttribute('aria-expanded', 'false');
       }
+      li.classList.remove('open');
+      const trigger = li.querySelector(':scope > a');
+      if (trigger) trigger.setAttribute('aria-expanded', 'false');
+    }
 
-      // Mouse interactions (desktop)
-      if (!isTouch) {
-        li.addEventListener('mouseenter', function() {
-          clearTimeout(closeTimer);
-          openTimer = setTimeout(openMenu, 160);
-        });
-        li.addEventListener('mouseleave', function() {
-          clearTimeout(openTimer);
-          closeTimer = setTimeout(closeMenu, 200);
-        });
+    // Initialize a single li (recursive-safe). Called for all li incl. nested.
+    function initItems() {
+      const items = Array.from(nav.querySelectorAll('li'));
+      items.forEach(li => {
+        if (li.dataset.dropdownInitialized) return;
 
-        // Make submenu itself react to mouseenter to avoid flicker when moving pointer between parent and submenu
-        menuEl.addEventListener('mouseenter', function() {
-          clearTimeout(closeTimer);
-        });
-        menuEl.addEventListener('mouseleave', function() {
-          closeTimer = setTimeout(closeMenu, 200);
-        });
-      }
+        const submenu = li.querySelector(':scope > .cms-dropdown-menu, :scope > ul');
+        if (!submenu) return; // no children
 
-      // Click interactions for touch or narrow screens
-      trigger.addEventListener('click', function(e) {
-        // if viewport is mobile or touch, toggle
-        if (isTouch || window.innerWidth <= 991) {
-          e.preventDefault();
-          if (menuEl.classList.contains('is-open')) {
-            closeMenu();
-          } else {
-            // close sibling open menus (accordion behavior)
-            const parentUl = li.parentElement;
-            if (parentUl) {
-              Array.from(parentUl.querySelectorAll(':scope > li.open')).forEach(sib => { if (sib !== li) sib.classList.remove('open'); sib.querySelectorAll('.cms-dropdown-menu.is-open').forEach(m => m.classList.remove('is-open')); });
+        li.dataset.dropdownInitialized = '1';
+        li.classList.add('has-children');
+        li.setAttribute('aria-haspopup', 'true');
+
+        // Ensure the submenu is a .cms-dropdown-menu (wrap plain UL)
+        let menuEl = submenu;
+        if (!submenu.classList.contains('cms-dropdown-menu')) {
+          const wrapper = document.createElement('div');
+          wrapper.className = 'cms-dropdown-menu';
+          wrapper.appendChild(submenu);
+          li.appendChild(wrapper);
+          menuEl = wrapper;
+        }
+
+        const trigger = li.querySelector(':scope > a');
+        if (trigger) {
+          trigger.setAttribute('aria-expanded', 'false');
+          trigger.setAttribute('aria-haspopup', 'true');
+        }
+
+        // Click handling (touch / mobile / accordion)
+        if (trigger) {
+          trigger.addEventListener('click', function(e) {
+            if (isTouch || isMobile()) {
+              e.preventDefault();
+              if (menuEl.classList.contains('is-open')) {
+                closeMenu(li, menuEl);
+              } else {
+                // close sibling open menus (accordion)
+                const parentUl = li.parentElement;
+                if (parentUl) {
+                  Array.from(parentUl.querySelectorAll(':scope > li.open')).forEach(sib => {
+                    if (sib !== li) {
+                      const sm = sib.querySelector(':scope > .cms-dropdown-menu');
+                      closeMenu(sib, sm);
+                    }
+                  });
+                }
+                openMenu(li, menuEl);
+              }
             }
-            openMenu();
-          }
+          });
+
+          // Keyboard support
+          trigger.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              if (menuEl.classList.contains('is-open')) closeMenu(li, menuEl);
+              else openMenu(li, menuEl);
+            } else if (e.key === 'Escape') {
+              closeMenu(li, menuEl);
+            }
+          });
         }
       });
+    }
 
-      // keyboard support
-      if (trigger) {
-        trigger.addEventListener('keydown', function(e) {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            if (menuEl.classList.contains('is-open')) closeMenu(); else openMenu();
-          } else if (e.key === 'Escape') {
-            closeMenu();
-          }
-        });
-      }
+    // Attach delegated listeners only once (this function runs multiple times).
+    if (nav.dataset.dropdownDelegateAttached) {
+      // still (re)initialize any newly moved items (e.g. More overflow)
+      initItems();
+      return;
+    }
+    nav.dataset.dropdownDelegateAttached = '1';
 
-      // process nested items recursively (find children inside this submenu)
-      // We intentionally don't call recursively here since initialization loop covers all LIs globally
+    // Attach delegated listeners so newly added items (e.g. More overflow) work too.
+    nav.addEventListener('mouseover', function(e) {
+      // Handle mouseenter on any li that has a submenu
+      const li = e.target.closest('li');
+      if (!li || li.dataset.dropdownInitialized !== '1') return;
+      if (isTouch || isMobile()) return;
+      const submenu = li.querySelector(':scope > .cms-dropdown-menu');
+      if (!submenu) return;
+      clearTimeout(li._closeTimer);
+      li._openTimer = setTimeout(() => openMenu(li, submenu), 160);
     });
+
+    nav.addEventListener('mouseout', function(e) {
+      const li = e.target.closest('li');
+      if (!li || li.dataset.dropdownInitialized !== '1') return;
+      if (isTouch || isMobile()) return;
+      const submenu = li.querySelector(':scope > .cms-dropdown-menu');
+      if (!submenu) return;
+      // Only close when leaving the whole li (including submenu safe area)
+      if (li.contains(e.relatedTarget)) return;
+      clearTimeout(li._openTimer);
+      li._closeTimer = setTimeout(() => closeMenu(li, submenu), 200);
+    });
+
+    // Initialize all existing li elements (including nested ones)
+    initItems();
+
+    // Close all when clicking outside the nav (attach once)
+    if (!nav.dataset.dropdownDocClickAttached) {
+      nav.dataset.dropdownDocClickAttached = '1';
+      document.addEventListener('click', function(e) {
+        if (!nav.contains(e.target)) {
+          nav.querySelectorAll('li.open').forEach(li => {
+            const sm = li.querySelector(':scope > .cms-dropdown-menu');
+            closeMenu(li, sm);
+          });
+        }
+      });
+    }
   }
 
 })(jQuery);

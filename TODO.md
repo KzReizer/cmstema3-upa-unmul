@@ -1,20 +1,8 @@
-  # Task: Fix & Upgrade Search + Translate Features
+# TODO: Navbar UX & Functionality Fix
 
-## Steps
-- [x] Analyze current search feature (broken empty-form button in navbar)
-- [x] Analyze translate feature (`.lang` AJAX switch broken due to jQuery load timing)
-- [x] Edit `application/views/front/home/header.php`:
-  - Add inline expanding search box (`cms-nav-search`) in navbar + `cms-search-trigger` button
-  - Replace Bootstrap language dropdown with custom animated `cms-lang-dropdown` using `data-url`
-  - Remove broken inline language-switch script
-- [x] Edit `public/front/css/custom.css`:
-  - Add inline expanding search box styles (width 0 -> 220px animation) + `cmsShine` keyframe
-  - Add animated language dropdown styles
-  - Add dark-mode overrides for search input
-- [x] Edit `public/front/js/custom.js`:
-  - Rewrite `initSearchOverlay()` for inline expanding box (toggle `.open`, ESC, outside click, focus)
-  - Add `initLanguageDropdown()` (animated toggle + robust `.lang` switch via fetch using `data-url`)
-  - Register both in `$(document).ready()`
-- [x] Test search box expands with animation & submits keyword
-- [x] Test language switch to English works on both home & inner pages
-
+## Tasks
+- [x] 1. Add `initNavIndicator()` definition (fixes ReferenceError blocking all init)
+- [x] 2. Rewrite `initDropdownBehavior()` to be recursive/robust (hover delay, arrow, auto-flip, accordion mobile)
+- [x] 3. Improve `initOverflowMenu()` so More dropdown nested items are wired into dropdown system
+- [x] 4. Consolidate/repair `.cms-dropdown-menu` CSS in custom.css (nested positioning, z-index, fade+slide)
+- [ ] 5. Verify in browser (hover/click/accordion, More overflow, Test Eng 7, Translate, Search)

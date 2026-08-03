@@ -291,15 +291,10 @@ img {
   opacity: 0;
   visibility: hidden;
   transform: translateY(8px);
-  transition: var(--cms-transition);
+  transition: opacity 200ms ease, transform 200ms ease, visibility 200ms ease;
   border: 1px solid var(--cms-glass-border);
-  z-index: 100;
-}
-
-.cms-navbar-nav > li:hover .cms-dropdown-menu {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
+  z-index: 1100;
+  pointer-events: none; /* enabled when visible */
 }
 
 .cms-dropdown-menu a {
@@ -309,6 +304,7 @@ img {
   color: var(--cms-text);
   border-radius: var(--cms-radius-sm);
   transition: var(--cms-transition);
+  white-space: nowrap;
 }
 
 .cms-dropdown-menu a:hover {
@@ -317,70 +313,19 @@ img {
   padding-left: 24px;
 }
 
-/* Ensure dropdowns do not block clicks when hidden */
-.cms-dropdown-menu {
-  pointer-events: none;
-}
-
-/* More dropdown styling (overflow) */
-.cms-nav-more {
-  position: relative;
-}
-
-.cms-nav-more > a.dropdown-item {
-  display: flex;
-  align-items: center;
-}
-
-.cms-nav-more .more-dropdown {
-  right: 0;
-  left: auto;
-  min-width: 200px;
-}
-
-/* when visible, allow pointer events */
-.cms-navbar-nav > li:hover .cms-dropdown-menu,
-.cms-nav-more.open .more-dropdown,
-.cms-dropdown-menu.is-open {
-  pointer-events: auto;
-}
-
-.cms-nav-more.open .more-dropdown {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-}
-
-.cms-dropdown-menu.more-dropdown a {
-  padding: 8px 16px;
-  white-space: nowrap;
-}
-
-/* Ensure nested dropdowns are positioned to the right by default */
-.cms-dropdown-menu {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(6px);
-  transition: opacity 200ms ease, transform 200ms ease;
-  z-index: 1100;
-  pointer-events: none; /* enabled when visible */
-  min-width: 200px;
-}
-
-.cms-dropdown-menu .cms-dropdown-menu {
-  top: 0;
-  left: 100%;
-  transform: translateX(8px) translateY(0);
-}
-
 /* when submenu is opened use class is-open */
 .cms-dropdown-menu.is-open {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* Nested dropdowns: open to the right by default */
+.cms-dropdown-menu .cms-dropdown-menu {
+  top: 0;
+  left: 100%;
+  transform: translateX(8px) translateY(0);
 }
 
 /* submenu to the left when .open-left is applied */
@@ -407,18 +352,53 @@ img {
   transform: translateY(0);
 }
 
-/* ensure nested menus look like floating panels */
-.cms-dropdown-menu {
-  background: var(--cms-bg-card);
-  border-radius: var(--cms-radius-md);
-  box-shadow: var(--cms-shadow-lg);
-  padding: 8px 0;
-  border: 1px solid var(--cms-glass-border);
+/* More dropdown styling (overflow) */
+.cms-nav-more {
+  position: relative;
 }
 
-/* hover safe area improvements: increase hit area for li containing submenu */
+.cms-nav-more > a.dropdown-item {
+  display: flex;
+  align-items: center;
+}
+
+.cms-nav-more .more-dropdown {
+  right: 0;
+  left: auto;
+  min-width: 200px;
+}
+
+.cms-dropdown-menu.more-dropdown a {
+  padding: 8px 16px;
+  white-space: nowrap;
+}
+
+/* More dropdown nested submenus: position to the right of the More panel */
+.cms-nav-more .cms-dropdown-menu .cms-dropdown-menu {
+  left: 100%;
+  right: auto;
+}
+
+.cms-nav-more .cms-dropdown-menu .cms-dropdown-menu.open-left {
+  left: auto;
+  right: 100%;
+}
+
+/* hover safe area: give li containing submenu a bit of bottom padding hit area */
 .cms-navbar-nav li.has-children {
   position: relative;
+}
+
+/* Navbar active indicator */
+.cms-nav-indicator {
+  position: absolute;
+  bottom: 4px;
+  height: 3px;
+  border-radius: 3px;
+  background: var(--cms-primary);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  z-index: 5;
 }
 
 /* Mobile: make submenu behave like accordion */
@@ -430,6 +410,9 @@ img {
     visibility: visible;
     pointer-events: auto;
     display: none;
+    box-shadow: none;
+    border: none;
+    padding: 0 0 0 16px;
   }
   .cms-dropdown-menu.is-open {
     display: block;

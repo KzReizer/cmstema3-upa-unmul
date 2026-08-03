@@ -121,10 +121,6 @@
     <!-- Theme Initialization Files -->
     <script src="<?php echo base_url(); ?>front/js/theme.init.js"></script>
     
-    <?php if (isset($master->temaDisability)) : ?>
-    <script src="https://cdn.userway.org/widget.js" data-account="<?= $master->temaDisability ?>"></script>
-    <?php endif; ?>
-
     <?php if (isset($master->temaResVoice)) : ?>
     <script src="https://code.responsivevoice.org/responsivevoice.js?key=<?= $master->temaResVoice ?>"></script>
     <?php endif; ?>
