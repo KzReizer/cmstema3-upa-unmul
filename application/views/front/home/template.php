@@ -53,6 +53,7 @@
     <!-- ===== CMS Custom Premium Styles ===== -->
     <link rel="stylesheet" href="<?php echo base_url(); ?>front/css/custom.css">
     <link rel="stylesheet" href="<?php echo base_url(); ?>front/css/custom1.css">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>front/css/drawer.css">
 
     <!-- Head Libs -->
     <script src="<?php echo base_url(); ?>front/vendor/modernizr/modernizr.min.js"></script>

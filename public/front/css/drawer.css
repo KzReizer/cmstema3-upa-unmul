@@ -1,0 +1,55 @@
+/* Mobile Drawer Styles */
+:root { --cms-drawer-width: 320px; }
+
+.cms-drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(8,12,20,0.45);
+  z-index: 1100;
+  opacity: 0;
+  transition: opacity 0.28s ease;
+  pointer-events: none;
+}
+
+.cms-drawer-backdrop[hidden] { display: none; }
+
+.cms-drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: var(--cms-drawer-width);
+  max-width: 90vw;
+  background: var(--cms-bg-card, #fff);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+  transform: translateX(-110%);
+  transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 1200;
+  display: flex;
+  flex-direction: column;
+}
+
+.cms-drawer[hidden] { display: none; }
+
+body.cms-drawer-open { overflow: hidden; }
+
+.cms-drawer.open { transform: translateX(0); }
+.cms-drawer-backdrop.visible { opacity: 1; pointer-events: auto; }
+
+.cms-drawer-header { display:flex; align-items:center; gap:12px; padding:18px; border-bottom:1px solid rgba(0,0,0,0.04); }
+.cms-drawer-header .cms-drawer-brand img { height:40px; width:auto; }
+.cms-drawer-close { background:transparent;border:none;font-size:1.1rem;cursor:pointer;color:var(--cms-text); }
+
+.cms-drawer-body { padding:14px 16px; overflow:auto; }
+.cms-drawer-search form { display:flex; gap:8px; margin-bottom:12px; }
+.cms-drawer-search input { flex:1; padding:10px 12px; border-radius:8px; border:1px solid rgba(0,0,0,0.06); }
+.cms-drawer-search button { background:var(--cms-primary); color:#fff; border:none; padding:8px 12px; border-radius:8px; }
+
+.cms-drawer-nav ul { list-style:none; padding:0; margin:0; }
+.cms-drawer-nav li { margin-bottom:6px; }
+.cms-drawer-nav a, .drawer-accordion-toggle { display:block; text-align:left; padding:10px 12px; border-radius:8px; color:var(--cms-text); text-decoration:none; font-weight:600; }
+.drawer-accordion-toggle { background:transparent; border:none; width:100%; cursor:pointer; }
+.drawer-submenu { padding-left:12px; margin-top:6px; }
+.drawer-submenu a { font-weight:500; padding:8px 12px; }
+
+@media (max-width:420px){ :root{--cms-drawer-width: 85vw;} }

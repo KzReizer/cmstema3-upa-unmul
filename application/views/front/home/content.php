@@ -22,19 +22,8 @@
 
         
 
-        <!-- Floating Statistics -->
-        <?php if ($stat != false) { ?>
-            <div class="cms-hero-stats">
-                <?php $statCount = 0; ?>
-                <?php foreach ($stat as $sta) { 
-                    if ($statCount >= 3) break; ?>
-                    <div class="cms-hero-stat">
-                        <span class="cms-hero-stat-number"><?= number_format($sta->statJumlah) ?>+</span>
-                        <span class="cms-hero-stat-label"><?= $sta->refstatNamaID ?></span>
-                    </div>
-                <?php $statCount++; } ?>
-            </div>
-        <?php } ?>
+     
+       
     </section>
 
    
@@ -218,10 +207,12 @@
                         if ($galleryCount >= 4) break;
                     ?>
                         <div class="cms-gallery-item" data-reveal>
-                            <img src="<?= $xpl->galeriFiles ?>" alt="Gallery">
-                            <div class="cms-gallery-overlay">
-                                <span><i class="fa fa-search-plus"></i> <?= $lang == 'ID' ? 'Lihat' : 'View' ?></span>
-                            </div>
+                            <a class="cms-gallery-link" href="<?= $xpl->galeriFiles ?>">
+                                <img src="<?= $xpl->galeriFiles ?>" alt="Gallery">
+                                <div class="cms-gallery-overlay">
+                                    <span><i class="fa fa-search-plus"></i> <?= $lang == 'ID' ? 'Lihat' : 'View' ?></span>
+                                </div>
+                            </a>
                         </div>
                     <?php $galleryCount++;
                     } ?>

@@ -312,4 +312,5 @@
             </button>
         </div>
     </div>
+    <?php $this->load->view('front/partials/mobile_drawer'); ?>
 </nav>

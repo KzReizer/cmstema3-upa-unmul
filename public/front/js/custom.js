@@ -37,21 +37,72 @@
      ------------------------------------------- */
   function initMobileMenu() {
     const toggle = document.querySelector('.cms-navbar-toggle');
-    const nav = document.querySelector('.cms-navbar-nav');
-    if (!toggle || !nav) return;
+    const drawer = document.querySelector('[data-drawer]');
+    const backdrop = document.querySelector('[data-drawer-backdrop]');
+    if (!toggle || !drawer || !backdrop) return;
 
-    toggle.addEventListener('click', function() {
-      this.classList.toggle('active');
-      nav.classList.toggle('open');
-      document.body.classList.toggle('menu-open');
+    // Open drawer
+    const openDrawer = () => {
+      drawer.hidden = false;
+      backdrop.hidden = false;
+      // allow CSS to paint
+      setTimeout(() => {
+        drawer.classList.add('open');
+        backdrop.classList.add('visible');
+        document.body.classList.add('cms-drawer-open');
+        drawer.setAttribute('aria-hidden', 'false');
+        // focus first element inside drawer for accessibility
+        const focusable = drawer.querySelectorAll('a,button,input,textarea,select,[tabindex]:not([tabindex="-1"])');
+        if (focusable.length) focusable[0].focus();
+      }, 20);
+    };
+
+    // Close drawer
+    const closeDrawer = () => {
+      drawer.classList.remove('open');
+      backdrop.classList.remove('visible');
+      document.body.classList.remove('cms-drawer-open');
+      drawer.setAttribute('aria-hidden', 'true');
+      // delay hiding to allow transition
+      setTimeout(() => {
+        drawer.hidden = true;
+        backdrop.hidden = true;
+        toggle.focus();
+      }, 320);
+    };
+
+    // Toggle button
+    toggle.addEventListener('click', () => {
+      if (drawer.classList.contains('open')) closeDrawer();
+      else openDrawer();
     });
 
-    // Close menu on link click
-    nav.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        toggle.classList.remove('active');
-        nav.classList.remove('open');
-        document.body.classList.remove('menu-open');
+    // Backdrop click closes
+    backdrop.addEventListener('click', closeDrawer);
+
+    // Close buttons inside drawer
+    drawer.querySelectorAll('[data-drawer-close], .cms-drawer-close').forEach(btn => btn.addEventListener('click', closeDrawer));
+
+    // Close when link clicked (mobile navigation behaviour)
+    drawer.querySelectorAll('.cms-drawer-nav a').forEach(a => a.addEventListener('click', () => {
+      closeDrawer();
+    }));
+
+    // Close on Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && drawer.classList.contains('open')) {
+        closeDrawer();
+      }
+    });
+
+    // Accordion toggles inside drawer
+    drawer.querySelectorAll('.drawer-accordion-toggle').forEach(btn => {
+      btn.setAttribute('aria-expanded', 'false');
+      btn.addEventListener('click', () => {
+        const submenu = btn.nextElementSibling;
+        const expanded = btn.getAttribute('aria-expanded') === 'true';
+        btn.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+        if (submenu) submenu.hidden = expanded;
       });
     });
   }
@@ -470,6 +521,17 @@
     initSkeletons();
     initSearchOverlay();
     initLanguageDropdown();
+
+    // Initialize gallery lightbox if Magnific Popup is available
+    if (typeof jQuery !== 'undefined' && typeof jQuery.fn.magnificPopup !== 'undefined') {
+      jQuery('.cms-gallery-grid').magnificPopup({
+        delegate: 'a.cms-gallery-link',
+        type: 'image',
+        gallery: { enabled: true },
+        removalDelay: 300,
+        mainClass: 'mfp-fade'
+      });
+    }
 
     // Recompute overflow & dropdowns when fonts/layout settle
     setTimeout(function(){ initOverflowMenu(); initDropdownBehavior(); }, 300);

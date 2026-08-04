@@ -85,16 +85,26 @@
   border-radius: var(--cms-radius-lg);
   padding: 32px;
   box-shadow: var(--cms-shadow-sm);
+  /* Contain floats/positioned content and ensure background extends */
+  overflow: auto;
+  position: relative;
 }
 
 .cms-content-article h2 {
-  margin-top: 32px;
-  margin-bottom: 16px;
+  margin-top: 16px;
+  margin-bottom: 12px;
 }
 
 .cms-content-article h3 {
-  margin-top: 24px;
-  margin-bottom: 12px;
+  margin-top: 14px;
+  margin-bottom: 10px;
+}
+
+/* Make sure elements inside detail body wrap and do not overflow the container */
+.cms-detail-body * {
+  box-sizing: border-box;
+  max-width: 100%;
+  word-break: break-word;
 }
 
 .cms-content-article p {
@@ -219,30 +229,26 @@
 .cms-sidebar-card {
   background: var(--cms-bg-card);
   border-radius: var(--cms-radius-lg);
-  padding: 24px;
+  padding: 22px;
   box-shadow: var(--cms-shadow-sm);
   margin-bottom: 24px;
+  border: 1px solid rgba(15, 23, 42, 0.06);
 }
 
 .cms-sidebar-card h4 {
   font-size: 1rem;
-  margin-bottom: 16px;
+  margin-bottom: 18px;
   padding-bottom: 12px;
-  border-bottom: 2px solid var(--cms-primary-light);
+  border-bottom: 1px solid rgba(0, 91, 172, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .cms-sidebar-list {
   list-style: none;
   padding: 0;
   margin: 0;
-}
-
-.cms-sidebar-list li {
-  display: flex;
-  gap: 12px;
-  padding: 12px 0;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
-  transition: var(--cms-transition);
 }
 
 .cms-sidebar-list li:last-child {
@@ -254,9 +260,9 @@
 }
 
 .cms-sidebar-list .thumb {
-  width: 50px;
-  height: 50px;
-  border-radius: var(--cms-radius-sm);
+  width: 72px;
+  height: 72px;
+  border-radius: var(--cms-radius-md);
   overflow: hidden;
   flex-shrink: 0;
 }
@@ -273,7 +279,7 @@
 }
 
 .cms-sidebar-list .info a {
-  font-size: 0.85rem;
+  font-size: 0.92rem;
   font-weight: 600;
   color: var(--cms-text);
   display: block;
@@ -281,6 +287,20 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.cms-sidebar-list .info .date {
+  font-size: 0.76rem;
+  color: var(--cms-text-light);
+}
+
+.cms-sidebar-list li {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+  transition: var(--cms-transition);
 }
 
 .cms-sidebar-list .info a:hover {

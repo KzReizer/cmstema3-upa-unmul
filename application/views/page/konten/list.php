@@ -20,44 +20,42 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 <div class="cms-content-list">
                     <?php                    
                     if($konten!==false) {
-                      $i = 1;                      
-                      foreach($konten as $row) { ?>
-                        <div class="cms-content-list-item" style="flex-direction:column;">
-                            <div class="row" style="width:100%;">
+                      foreach($konten as $row) {
+                        $detailSlug = !empty($row->{'kontenNama'.$lang}) ? $row->{'kontenNama'.$lang} : (isset($row->kontenNamaID) ? $row->kontenNamaID : '');
+                        $rawExcerpt = strip_tags($row->{'kontenIsi'.$lang});
+                        $wrappedExcerpt = wordwrap($rawExcerpt, 250);
+                        $excerpt = strpos($wrappedExcerpt, "\n") !== false ? substr($wrappedExcerpt, 0, strpos($wrappedExcerpt, "\n")) : substr($rawExcerpt, 0, 250);
+                        $excerpt = trim($excerpt);
+                    ?>
+                        <article class="cms-content-list-item">
+                            <div class="row gx-4 gy-4 align-items-start">
                                 <div class="col-lg-5">
                                     <div class="post-image">
-                                        <div>
+                                        <div class="img-thumbnail">
                                             <?php if (!empty($row->kontenBanner)) { ?>
-                                            <div class="img-thumbnail" style="border:none;border-radius:var(--cms-radius-md);overflow:hidden;">
-                                                <a href="<?=base_url()?>page/detail/<?= $row->{'kontenNama' . $lang} ?>"><img class="img-fluid" src="<?= $row->kontenBanner ?>" style="border-radius:var(--cms-radius-md);"></a>
-                                            </div>
-                                            <?php }else{ ?>
-                                            <div class="img-thumbnail" style="border:none;border-radius:var(--cms-radius-md);overflow:hidden;">
-                                                <img alt=""  class="img-fluid" src="<?=site_url('page/loadthumb/noimage.jpg');?>" style="border-radius:var(--cms-radius-md);">
-                                            </div>
+                                                <a href="<?=base_url()?>page/detail/<?= $detailSlug ?>"><img class="img-fluid" src="<?= $row->kontenBanner ?>"></a>
+                                            <?php } else { ?>
+                                                <img alt="" class="img-fluid" src="<?=site_url('page/loadthumb/noimage.jpg');?>">
                                             <?php } ?>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-lg-7">
                                     <div class="list-content">
-                                        <h4><a href="<?=base_url()?>page/detail/<?= $row->{'kontenNama'.$lang} ?>"><?=$row->{'kontenJudul'.$lang}?></a></h4>
-                                        <p><?=substr(strip_tags($row->{'kontenIsi'.$lang}), 0, strpos(wordwrap($row->{'kontenIsi'.$lang}, 250), "\n"));?>..</p>
+                                        <h4><a href="<?=base_url()?>page/detail/<?= $detailSlug ?>"><?= $row->{'kontenJudul'.$lang} ?></a></h4>
+                                        <p><?= $excerpt ?><?= mb_strlen($excerpt) < mb_strlen($rawExcerpt) ? '...' : '' ?></p>
+                                        <div class="cms-detail-meta">
+                                            <div class="meta-group">
+                                                <?php if (!empty($row->kontenTanggal)): ?><span class="meta-item"><i class="fa fa-calendar"></i> <?= datetoindo($row->kontenTanggal) ?></span><?php endif; ?>
+                                                <?php if (!empty($row->kontenAuthor)): ?><span class="meta-item"><i class="fa fa-user"></i> <?= $row->kontenAuthor ?></span><?php endif; ?>
+                                                <?php if (!empty($row->{'kontenTag'.$lang})): ?><span class="meta-item"><i class="fa fa-tag"></i> <?= $row->{'kontenTag'.$lang} ?></span><?php endif; ?>
+                                            </div>
+                                            <a href="<?=base_url()?>page/detail/<?= $detailSlug ?>" class="cms-btn cms-btn-primary cms-btn-sm"><?= $lang=='ID' ? 'Lihat Selengkapnya' : 'Read More' ?> <i class="fa fa-arrow-right"></i></a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="row" style="width:100%;">
-                                <div class="col">
-                                    <div class="cms-detail-meta">
-                                        <span><i class="fa fa-calendar"></i> <?=!empty($row->kontenTanggal)?datetoindo($row->kontenTanggal):"";?> </span>
-                                        <span><i class="fa fa-user"></i> By <?=$row->kontenAuthor?> </span>
-                                        <span><i class="fa fa-tag"></i> <?=$row->{'kontenTag'.$lang}?> </span>
-                                        <span class="d-block d-md-inline-block float-md-right mt-3 mt-md-0"><a href="<?=base_url()?>page/detail/<?= $row->{'kontenNama'.$lang} ?>" class="cms-btn cms-btn-primary cms-btn-sm"><?=$lang=='ID'?'Lihat Selengkapnya':'Read More'?> <i class="fa fa-arrow-right"></i></a></span>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
+                        </article>
                     <?php }
                 }else{?>
                 <h5>Oppssss.. Tidak Ada Data  <?=$is_active ?> !</h5>
@@ -71,9 +69,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
         </div>
 
-        <?php
-        $this->load->view('page/sidebar');
-        ?>
+        <div class="col-lg-3">
+            <?php $this->load->view('page/sidebar'); ?>
+        </div>
+
     </div>
 
 </div>

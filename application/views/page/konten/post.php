@@ -21,8 +21,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					</div>
 				</div>
 			</div>
-			<?php $this->load->view('page/sidebar');?>
-		</div>
+			<div class="col-lg-3">
+				<?php $this->load->view('page/sidebar');?>
+			</div>
+			</div>
 	</div>
 
 </div>
