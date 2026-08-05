@@ -103,81 +103,46 @@
                     <span class="cms-eyebrow"><?= $lang == 'ID' ? 'Kabar Terkini' : 'Latest Stories' ?></span>
                     <h2><?= $lang == 'ID' ? '<strong>Berita</strong> Terbaru' : '<strong>Latest</strong> News' ?></h2>
                 </div>
-                <?php
-                    // Prepare featured and supporting items: use first item as featured, next two as supports
-                    $featured = null;
-                    $supports = [];
-                    $i = 0;
-                    foreach ($berita as $bitem) {
-                        if ($i == 0) { $featured = $bitem; }
-                        elseif ($i <= 2) { $supports[] = $bitem; }
-                        $i++; if ($i > 2) break;
-                    }
-                ?>
-
-                <div class="news-grid">
-                    <div class="row gx-4 gy-4 align-items-stretch">
-                        <?php if ($featured != null) { 
-                            $detailSlug = !empty($featured->{'kontenNama'.$lang}) ? $featured->{'kontenNama'.$lang} : (isset($featured->kontenNamaID) ? $featured->kontenNamaID : '');
-                            $rawExcerptF = strip_tags($featured->{'kontenIsi'.$lang});
-                            $excerptF = trim(substr($rawExcerptF, 0, 300));
-                        ?>
-                        <div class="col-12 col-lg-6" data-reveal>
-                            <article class="featured-card">
-                                <a href="<?= base_url() ?>page/detail/<?= $detailSlug ?>">
-                                    <div class="featured-image">
-                                        <?php if (!empty($featured->kontenBanner)) { ?>
-                                            <img src="<?= $featured->kontenBanner ?>" alt="<?= htmlentities($featured->{'kontenJudul'.$lang}) ?>">
+                <div class="news-grid row gx-4 gy-4">
+                    <?php
+                    $newsCount = 0;
+                    foreach ($berita as $row) {
+                                            if ($newsCount >= 3) break;
+                        $detailSlug = !empty($row->{'kontenNama'.$lang}) ? $row->{'kontenNama'.$lang} : (isset($row->kontenNamaID) ? $row->kontenNamaID : '');
+                        $rawExcerpt = strip_tags($row->{'kontenIsi'.$lang});
+                        $wrappedExcerpt = wordwrap($rawExcerpt, 150);
+                        $excerpt = strpos($wrappedExcerpt, "\n") !== false ? substr($wrappedExcerpt, 0, strpos($wrappedExcerpt, "\n")) : substr($rawExcerpt, 0, 150);
+                        $excerpt = trim($excerpt);
+                    ?>
+                        <article class="news-card col-12 col-md-6 col-lg-4" data-reveal>
+                            <div class="card">
+                                <div class="card-image">
+                                    <div class="img-thumbnail">
+                                        <?php if (!empty($row->kontenBanner)) { ?>
+                                            <a href="<?= base_url() ?>page/detail/<?= $detailSlug ?>"><img class="img-fluid" src="<?= $row->kontenBanner ?>" alt="<?= htmlentities($row->{'kontenJudul'.$lang}) ?>"></a>
                                         <?php } else { ?>
-                                            <img src="<?= site_url('page/loadthumb/noimage.jpg');?>" alt=""> 
+                                            <a href="<?= base_url() ?>page/detail/<?= $detailSlug ?>"><img alt="" class="img-fluid" src="<?= site_url('page/loadthumb/noimage.jpg');?>"></a>
                                         <?php } ?>
                                     </div>
-                                    <div class="featured-body">
-                                        <h3><?= $featured->{'kontenJudul'.$lang} ?></h3>
-                                        <p class="excerpt"><?= $excerptF ?><?= mb_strlen($excerptF) < mb_strlen($rawExcerptF) ? '...' : '' ?></p>
-                                    </div>
-                                </a>
-                            </article>
-                        </div>
-                        <?php } ?>
-
-                        <div class="col-12 col-lg-6">
-                            <div class="row gx-3 gy-3">
-                                <?php foreach ($supports as $srow) {
-                                    $detailSlug = !empty($srow->{'kontenNama'.$lang}) ? $srow->{'kontenNama'.$lang} : (isset($srow->kontenNamaID) ? $srow->kontenNamaID : '');
-                                    $rawExcerpt = strip_tags($srow->{'kontenIsi'.$lang});
-                                    $wrappedExcerpt = wordwrap($rawExcerpt, 120);
-                                    $excerpt = strpos($wrappedExcerpt, "\n") !== false ? substr($wrappedExcerpt, 0, strpos($wrappedExcerpt, "\n")) : substr($rawExcerpt, 0, 120);
-                                    $excerpt = trim($excerpt);
-                                ?>
-                                    <article class="news-card col-12 col-md-6" data-reveal>
-                                        <div class="card">
-                                            <div class="card-image">
-                                                <div class="img-thumbnail">
-                                                    <?php if (!empty($srow->kontenBanner)) { ?>
-                                                        <a href="<?= base_url() ?>page/detail/<?= $detailSlug ?>"><img class="img-fluid" src="<?= $srow->kontenBanner ?>" alt="<?= htmlentities($srow->{'kontenJudul'.$lang}) ?>"></a>
-                                                    <?php } else { ?>
-                                                        <a href="<?= base_url() ?>page/detail/<?= $detailSlug ?>"><img alt="" class="img-fluid" src="<?= site_url('page/loadthumb/noimage.jpg');?>"></a>
-                                                    <?php } ?>
-                                                </div>
-                                            </div>
-                                            <div class="card-body">
-                                                <h4 class="card-title"><a href="<?= base_url() ?>page/detail/<?= $detailSlug ?>"><?= $srow->{'kontenJudul'.$lang} ?></a></h4>
-                                                <p class="card-excerpt"><?= $excerpt ?><?= mb_strlen($excerpt) < mb_strlen($rawExcerpt) ? '...' : '' ?></p>
-                                                <div class="cms-detail-meta">
-                                                    <div class="meta-group">
-                                                        <?php if (!empty($srow->kontenTanggal)): ?><span class="meta-item"><i class="fa fa-calendar"></i> <?= datetoindo($srow->kontenTanggal) ?></span><?php endif; ?>
-                                                        <?php if (!empty($srow->kontenAuthor)): ?><span class="meta-item"><i class="fa fa-user"></i> <?= $srow->kontenAuthor ?></span><?php endif; ?>
-                                                    </div>
-                                                    <a href="<?= base_url() ?>page/detail/<?= $detailSlug ?>" class="cms-btn cms-btn-primary cms-btn-sm"><?= $lang == 'ID' ? 'Baca Selengkapnya' : 'Read More' ?> <i class="fa fa-arrow-right"></i></a>
-                                                </div>
-                                            </div>
+                                </div>
+                                <div class="card-body">
+                                    <h4 class="card-title"><a href="<?= base_url() ?>page/detail/<?= $detailSlug ?>"><?= $row->{'kontenJudul'.$lang} ?></a></h4>
+                                    <p class="card-excerpt"><?= $excerpt ?><?= mb_strlen($excerpt) < mb_strlen($rawExcerpt) ? '...' : '' ?></p>
+                                    <div class="cms-detail-meta">
+                                        <div class="meta-group">
+                                            <?php if (!empty($row->kontenTanggal)): ?><span class="meta-item"><i class="fa fa-calendar"></i> <?= datetoindo($row->kontenTanggal) ?></span><?php endif; ?>
+                                            <?php if (!empty($row->kontenAuthor)): ?><span class="meta-item"><i class="fa fa-user"></i> <?= $row->kontenAuthor ?></span><?php endif; ?>
+                                            <?php if (!empty($row->{'kontenTag'.$lang})): ?><span class="meta-item"><i class="fa fa-tag"></i> <?= $row->{'kontenTag'.$lang} ?></span><?php endif; ?>
                                         </div>
-                                    </article>
-                                <?php } ?>
+                                        <a href="<?= base_url() ?>page/detail/<?= $detailSlug ?>" class="cms-btn cms-btn-primary cms-btn-sm"><?= $lang == 'ID' ? 'Baca Selengkapnya' : 'Read More' ?> <i class="fa fa-arrow-right"></i></a>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
+                        </article>
+                    <?php
+                        $newsCount++;
+                    }
+                    ?>
                 </div>
                 <div class="text-center mt-5">
                     <a class="cms-btn cms-btn-outline" href="<?= base_url() ?>page/list/berita">
