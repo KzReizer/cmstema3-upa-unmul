@@ -50,30 +50,31 @@ class Page extends MY_Controller
         $data['keyword'] = false;
         $getkategori = $this->model_konten->get_by_id('ref_kategori_konten ', 'kategoriNama="' . $page . '"');
         $data['is_active'] = ucwords($getkategori->{'kategoriKet' . $data['lang']});
-        $perpage = 10;
+        $perpage = 9;
         $offset = $this->uri->segment(4);
         $data['konten'] = $this->model_konten->getDataPagination($perpage, $offset, $page, $data['master']->temaId);
         $config['base_url'] = site_url('page/list/' . $page . '/');
         $config['total_rows'] = $this->model_konten->getAll($page, $data['master']->temaId);
         $config['per_page'] = $perpage;
-        $config['full_tag_open']    = '<ul class="pagination">';
+        $config['full_tag_open']    = '<ul class="pagination justify-content-center">';
         $config['full_tag_close']   = '</ul>';
         $config['first_link']       = 'First';
         $config['last_link']        = 'Last';
-        $config['first_tag_open']   = '<li class="page-item page-link">';
+        $config['first_tag_open']   = '<li class="page-item">';
         $config['first_tag_close']  = '</li>';
         $config['prev_link']        = '&laquo';
-        $config['prev_tag_open']    = '<li class="page-item page-link">';
+        $config['prev_tag_open']    = '<li class="page-item">';
         $config['prev_tag_close']   = '</li>';
         $config['next_link']        = '&raquo';
-        $config['next_tag_open']    = '<li class="page-item page-link">';
+        $config['next_tag_open']    = '<li class="page-item">';
         $config['next_tag_close']   = '</li>';
-        $config['last_tag_open']    = '<li class="page-item page-link">';
+        $config['last_tag_open']    = '<li class="page-item">';
         $config['last_tag_close']   = '</li>';
-        $config['cur_tag_open']     = '<li class="active"><a href="" class="page-link">';
+        $config['cur_tag_open']     = '<li class="page-item active"><a class="page-link" href="#">';
         $config['cur_tag_close']    = '</a></li>';
-        $config['num_tag_open']     = '<li class="page-item page-link">';
+        $config['num_tag_open']     = '<li class="page-item">';
         $config['num_tag_close']    = '</li>';
+        $config['attributes']       = array('class' => 'page-link');
         $this->pagination->initialize($config);
         $data['search_url'] = site_url('page/searchpost') . '/';
         $data['slider'] = $this->{$this->_model}->get_ref_table('f_slider', '', ['sliderIsDisplay' => 1]);
@@ -96,6 +97,15 @@ class Page extends MY_Controller
 		$data['kategoriiku'] = $this->model_konten->get_ref_table('ref_kategori_konten','kategoriId');
         $data['publikasi'] = $this->model_konten->get_ref_table('ref_kategori_publikasi ', 'publikasiId');
         $data['is_active'] = ucwords($kategori != false ? $kategori->{'kategoriKet' . $data['lang']} : '');
+        $related = $this->model_konten->get_konten('berita', $data['master']->temaId, 7);
+        if ($related !== false) {
+            $filtered = array_filter($related, function ($item) use ($kontenNama) {
+                return ($item->kontenNamaID !== $kontenNama && $item->kontenNamaEN !== $kontenNama);
+            });
+            $data['related'] = array_slice(array_values($filtered), 0, 6);
+        } else {
+            $data['related'] = false;
+        }
         $data['pages'] = 'page/konten/detail';
         $this->load->view('page/template', $data);
     }

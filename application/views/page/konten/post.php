@@ -13,7 +13,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	<div class="container cms-content-page">
 		<div class="row">
-			<div class="col-lg-9">
+			<div class="col-12">
 				<div class="cms-content-article">
 					<div class="cms-detail-body">
 						<p><?= $datas!=false?$datas->{'pageContent'.$lang}:""?></p>
@@ -21,10 +21,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					</div>
 				</div>
 			</div>
-			<div class="col-lg-3">
-				<?php $this->load->view('page/sidebar');?>
-			</div>
-			</div>
+		</div>
 	</div>
 
 </div>

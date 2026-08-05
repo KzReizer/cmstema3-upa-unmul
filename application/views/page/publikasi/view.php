@@ -15,48 +15,48 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
     <div class="container cms-content-page">
 
-        <div class="row">
-            <div class="col-lg-9">
+      <div class="row">
+          <div class="col-12">
 
-                <form id="contactForm"action="<?=$searchpublikasi_url?>" method="POST">
-                    <div class="form-row">
-                       <div class="form-group col">
-                            <label><?= $lang == 'ID' ? 'Tahun' : 'Year' ?></label>
-                            <select class="form-control m-select2" id="hakakses" name="tahun">
-                             <option value=""></option>
-                             <?php for ($x = date('Y'); $x >= 2019; $x--) { ?>
-                                <option value="<?= $x ?>"><?= $x ?></option>
-                            <?php } ?>
-                        </select>
-                    </div>
-
-                    <?php if (($jenis_publikasi !='Penelitian') and ($jenis_publikasi !='Pengabdian Masyarakat')) {?>
-                    <div class="form-group col">
-                        <label><?= $lang == 'ID' ? 'Jenis' : 'Type' ?> <?= $lang == 'ID' ? $jenis_publikasi : $jenis_publikasiEN ?></label>
-                        <select class="form-control m-select2" name="jenisp">
+              <form id="contactForm"action="<?=$searchpublikasi_url?>" method="POST">
+                  <div class="form-row">
+                     <div class="form-group col">
+                          <label><?= $lang == 'ID' ? 'Tahun' : 'Year' ?></label>
+                          <select class="form-control m-select2" id="hakakses" name="tahun">
                            <option value=""></option>
-                           <option value="%">Select All</option>
-                            <?php
-                                    if ($jenis_pub->data != false) {
-                                        $rsuket = '';
-                                        $i = 1;
-                                        foreach ($jenis_pub->data as $row) {
-                                            if ($rsuket != $row->rsuket) {
-                                                if ($i > 1) {
-                                                    echo '</optgroup>';
-                                                }
-                                                $rsuket = $row->rsuket;
-                                                echo '<optgroup label="' . $rsuket . '">';
-                                            }
-                                            echo '<option value="' . $row->rkgid . '">'.$row->rkgkegiatan . '</option>';
-                                            $i++;
-                                        }
-                                    }
-                                    ?>
+                           <?php for ($x = date('Y'); $x >= 2019; $x--) { ?>
+                              <option value="<?= $x ?>"><?= $x ?></option>
+                          <?php } ?>
+                      </select>
+                  </div>
 
-                    </select>
-                </div>
-                  <?php }?>
+                  <?php if (($jenis_publikasi !='Penelitian') and ($jenis_publikasi !='Pengabdian Masyarakat')) {?>
+                  <div class="form-group col">
+                      <label><?= $lang == 'ID' ? 'Jenis' : 'Type' ?> <?= $lang == 'ID' ? $jenis_publikasi : $jenis_publikasiEN ?></label>
+                      <select class="form-control m-select2" name="jenisp">
+                         <option value=""></option>
+                         <option value="%">Select All</option>
+                          <?php
+                                  if ($jenis_pub->data != false) {
+                                      $rsuket = '';
+                                      $i = 1;
+                                      foreach ($jenis_pub->data as $row) {
+                                          if ($rsuket != $row->rsuket) {
+                                              if ($i > 1) {
+                                                  echo '</optgroup>';
+                                              }
+                                              $rsuket = $row->rsuket;
+                                              echo '<optgroup label="' . $rsuket . '">';
+                                          }
+                                          echo '<option value="' . $row->rkgid . '">'.$row->rkgkegiatan . '</option>';
+                                          $i++;
+                                      }
+                                  }
+                                  ?>
+
+                  </select>
+              </div>
+                <?php }?>
             </div>
             <div class="form-row">
                 <div class="form-group col">
@@ -129,23 +129,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <?php echo $this->pagination->create_links(); ?>
     </nav>
 <?php }else{?>
-      <div class="col-lg-12 text-center">
-                <h2 class="mt-2 mb-0"><strong> <?=$jenis_publikasi?></strong></h2>
-                <p class="lead">Oppss!! Not Found  <span class="alternative-font text-4"> <?= $lang == 'ID' ? 'Tahun' : 'Year' ?>
-                    <?php if ($jenis_publikasi !='Pengabdian Masyarakat') { ?>
-                       <?=$tahun?>
-                   <?php }else{ ?>
-                       <?=$tahunpm?>
-                   <?php } ?>
-                       </span></p>
-            </div>
+    <div class="col-lg-12 text-center">
+              <h2 class="mt-2 mb-0"><strong> <?=$jenis_publikasi?></strong></h2>
+              <p class="lead">Oppss!! Not Found  <span class="alternative-font text-4"> <?= $lang == 'ID' ? 'Tahun' : 'Year' ?>
+                  <?php if ($jenis_publikasi !='Pengabdian Masyarakat') { ?>
+                     <?=$tahun?>
+                 <?php }else{ ?>
+                     <?=$tahunpm?>
+                 <?php } ?>
+                     </span></p>
+          </div>
 <?php }?>
 </div>
 
-            <div class="col-lg-3">
-                <?php $this->load->view('page/sidebar'); ?>
-            </div>
-        </div>
+      </div>
 
 </div>
 

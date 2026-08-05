@@ -16,7 +16,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <div class="container cms-content-page">
 
         <div class="row">
-            <div class="col-lg-9">
+            <div class="col-12">
                 <div class="cms-content-list">
                     <?php if ($keyword !== FALSE) :
                         if (empty($datasearch)) { ?>
@@ -77,10 +77,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 <nav aria-label="Page navigation" class="cms-pagination">
                     <?php echo $this->pagination->create_links(); ?>
                 </nav>
-            </div>
-
-            <div class="col-lg-3">
-                <?php $this->load->view('page/sidebar'); ?>
             </div>
         </div>
 

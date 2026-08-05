@@ -15,7 +15,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <div class="container cms-content-page">
 
         <div class="row">
-            <div class="col-lg-9">
+            <div class="col-12">
                 <div class="cms-content-list">
                 <?php if ($keyword !== FALSE): ?>
     <div>
@@ -101,10 +101,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <?php   $i++;}} ?>
                 </div>
             </div>
-
-            <?php
-            $this->load->view('page/sidebareng');
-            ?>
         </div>
 
     </div>
