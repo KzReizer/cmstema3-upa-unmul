@@ -557,6 +557,120 @@ img {
   transform: rotate(-45deg);
 }
 
+/* News Grid & Card styles */
+.news-grid {
+  margin-top: 24px;
+}
+
+.news-card {
+  margin-bottom: 24px;
+}
+
+.news-card .card {
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 12px 32px rgba(20,40,60,0.08);
+  background: var(--cms-bg-card);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.news-card .card-image .img-thumbnail {
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
+  display: block;
+  border-radius: 0;
+  /* Remove default thumbnail padding/border so image reaches card edge */
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  margin: 0 !important;
+}
+
+.news-card .card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Slightly taller images on larger screens so cards feel less "skinny" */
+@media (min-width: 992px) {
+  .news-card .card-image .img-thumbnail {
+    height: 220px; /* increased from 200/180 to give more presence */
+  }
+}
+
+/* Ensure detail hero image spans width of its container and sits flush */
+.cms-detail-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: var(--cms-radius-md);
+  object-fit: cover;
+  margin-bottom: 24px;
+}
+
+/* For homepage only: give news cards a bit more horizontal presence */
+@media (min-width: 1200px) {
+  /* when 3-up grid is used, increase card padding to balance whitespace */
+  .news-grid.row > .news-card {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+}
+
+.news-card .card-body {
+  padding: 24px 20px 24px;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}
+
+.news-card .card-title {
+  margin: 0 0 12px 0;
+  font-size: 1.05rem;
+}
+
+.news-card .card-excerpt {
+  color: var(--cms-text-muted, #6c757d);
+  margin-bottom: 16px;
+  flex: 1 1 auto;
+}
+
+.cms-detail-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 18px;
+}
+
+.cms-pagination {
+  text-align: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 575px) {
+  .news-card .card-image .img-thumbnail {
+    height: 160px;
+  }
+}
+@media (min-width: 576px) and (max-width: 991px) {
+  .news-card .card-image .img-thumbnail {
+    height: 180px;
+  }
+}
+@media (min-width: 992px) {
+  .news-card .card-image .img-thumbnail {
+    height: 200px;
+  }
+}
+
 /* Mobile Menu */
 @media (max-width: 991px) {
   .cms-navbar-toggle {
@@ -1380,6 +1494,70 @@ img {
 .cms-partner-section {
   background: var(--cms-bg);
   padding: 48px 0;
+}
+
+.cms-partner-section .cms-section-heading {
+  margin-bottom: 32px;
+}
+
+.cms-partner-title {
+  margin-top: 0.75rem;
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  font-weight: 700;
+  color: var(--cms-text);
+}
+
+.cms-partner-carousel .owl-stage-outer {
+  padding: 0 10px;
+}
+
+.cms-partner-card {
+  padding: 22px 16px;
+  min-height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+  transition: transform 0.3s ease, background 0.3s ease, border-color 0.3s ease;
+}
+
+.cms-partner-card:hover {
+  transform: translateY(-3px);
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+.cms-partner-logo-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 180px;
+  width: 100%;
+}
+
+.cms-partner-logo {
+  max-height: 64px;
+  width: auto;
+  display: block;
+  filter: grayscale(1);
+  opacity: 0.72;
+  transition: filter 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+}
+
+.cms-partner-card:hover .cms-partner-logo {
+  filter: grayscale(0);
+  opacity: 1;
+  transform: scale(1.02);
+}
+
+@media (max-width: 767px) {
+  .cms-partner-card {
+    min-height: 100px;
+    padding: 18px 14px;
+  }
 }
 
 /* -------------------------------------------

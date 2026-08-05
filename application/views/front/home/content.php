@@ -103,36 +103,42 @@
                     <span class="cms-eyebrow"><?= $lang == 'ID' ? 'Kabar Terkini' : 'Latest Stories' ?></span>
                     <h2><?= $lang == 'ID' ? '<strong>Berita</strong> Terbaru' : '<strong>Latest</strong> News' ?></h2>
                 </div>
-                <div class="cms-news-grid">
+                <div class="news-grid row gx-4 gy-4">
                     <?php
                     $newsCount = 0;
                     foreach ($berita as $row) {
                         if ($newsCount >= 4) break;
+                        $detailSlug = !empty($row->{'kontenNama'.$lang}) ? $row->{'kontenNama'.$lang} : (isset($row->kontenNamaID) ? $row->kontenNamaID : '');
+                        $rawExcerpt = strip_tags($row->{'kontenIsi'.$lang});
+                        $wrappedExcerpt = wordwrap($rawExcerpt, 150);
+                        $excerpt = strpos($wrappedExcerpt, "\n") !== false ? substr($wrappedExcerpt, 0, strpos($wrappedExcerpt, "\n")) : substr($rawExcerpt, 0, 150);
+                        $excerpt = trim($excerpt);
                     ?>
-                        <div class="cms-news-card" data-reveal>
-                            <div class="cms-news-card-image">
-                                <?php if (!empty($row->{'kontenTag' . $lang})) { ?>
-                                    <span class="cms-news-badge"><?= $row->{'kontenTag' . $lang} ?></span>
-                                <?php } ?>
-                                <img src="<?= $row->kontenBanner ?>" alt="<?= $row->{'kontenJudul' . $lang} ?>">
-                            </div>
-                            <div class="cms-news-card-body">
-                                <div class="cms-news-meta">
-                                    <span><i class="fa fa-calendar"></i> <?= !empty($row->kontenTanggal) ? datetoindo($row->kontenTanggal) : '' ?></span>
-                                    <span><i class="fa fa-user"></i> <?= $row->kontenAuthor ?></span>
+                        <article class="news-card col-12 col-md-6 col-lg-4" data-reveal>
+                            <div class="card">
+                                <div class="card-image">
+                                    <div class="img-thumbnail">
+                                        <?php if (!empty($row->kontenBanner)) { ?>
+                                            <a href="<?= base_url() ?>page/detail/<?= $detailSlug ?>"><img class="img-fluid" src="<?= $row->kontenBanner ?>" alt="<?= htmlentities($row->{'kontenJudul'.$lang}) ?>"></a>
+                                        <?php } else { ?>
+                                            <a href="<?= base_url() ?>page/detail/<?= $detailSlug ?>"><img alt="" class="img-fluid" src="<?= site_url('page/loadthumb/noimage.jpg');?>"></a>
+                                        <?php } ?>
+                                    </div>
                                 </div>
-                                <h5>
-                                    <a href="<?= base_url() ?>page/detail/<?= $row->{'kontenNama' . $lang} ?>">
-                                        <?= $row->{'kontenJudul' . $lang} ?>
-                                    </a>
-                                </h5>
-                                <p><?= substr(strip_tags($row->{'kontenIsi' . $lang}), 0, 120) ?>...</p>
-                                <a href="<?= base_url() ?>page/detail/<?= $row->{'kontenNama' . $lang} ?>" class="cms-read-more">
-                                    <?= $lang == 'ID' ? 'Baca Selengkapnya' : 'Read More' ?>
-                                    <i class="fa fa-arrow-right"></i>
-                                </a>
+                                <div class="card-body">
+                                    <h4 class="card-title"><a href="<?= base_url() ?>page/detail/<?= $detailSlug ?>"><?= $row->{'kontenJudul'.$lang} ?></a></h4>
+                                    <p class="card-excerpt"><?= $excerpt ?><?= mb_strlen($excerpt) < mb_strlen($rawExcerpt) ? '...' : '' ?></p>
+                                    <div class="cms-detail-meta">
+                                        <div class="meta-group">
+                                            <?php if (!empty($row->kontenTanggal)): ?><span class="meta-item"><i class="fa fa-calendar"></i> <?= datetoindo($row->kontenTanggal) ?></span><?php endif; ?>
+                                            <?php if (!empty($row->kontenAuthor)): ?><span class="meta-item"><i class="fa fa-user"></i> <?= $row->kontenAuthor ?></span><?php endif; ?>
+                                            <?php if (!empty($row->{'kontenTag'.$lang})): ?><span class="meta-item"><i class="fa fa-tag"></i> <?= $row->{'kontenTag'.$lang} ?></span><?php endif; ?>
+                                        </div>
+                                        <a href="<?= base_url() ?>page/detail/<?= $detailSlug ?>" class="cms-btn cms-btn-primary cms-btn-sm"><?= $lang == 'ID' ? 'Baca Selengkapnya' : 'Read More' ?> <i class="fa fa-arrow-right"></i></a>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        </article>
                     <?php
                         $newsCount++;
                     }
@@ -249,18 +255,17 @@
         <div class="container">
             <div class="text-center cms-section-heading" style="margin-bottom:32px;">
                 <span class="cms-eyebrow"><?= $lang == 'ID' ? 'Mitra' : 'Partners' ?></span>
+                <h2 class="cms-partner-title"><?= $lang == 'ID' ? 'Bersama Mitra Strategis' : 'Our Strategic Partners' ?></h2>
             </div>
-            <div class="row text-center">
+            <div class="cms-partner-carousel">
                 <div class="owl-carousel owl-theme" data-plugin-options="{'items': 6, 'autoplay': true, 'autoplayTimeout': 3000, 'responsive': {'0':{'items':3}, '768':{'items':4}, '992':{'items':6}}}">
                     <?php if ($logo != false) {
                         foreach ($logo as $lgo) { ?>
-                            <div style="padding:20px;">
-                                <a href="<?= $lgo->galeriLinkEmbed ?>" target="_blank">
-                                    <img class="img-fluid" style="max-height:60px;width:auto;filter:grayscale(1);opacity:0.6;transition:all 0.3s;" 
-                                         src="<?= $lgo->galeriFiles ?>" 
-                                         alt="Partner"
-                                         onmouseover="this.style.filter='grayscale(0)';this.style.opacity='1';"
-                                         onmouseout="this.style.filter='grayscale(1)';this.style.opacity='0.6';">
+                            <div class="cms-partner-card">
+                                <a href="<?= $lgo->galeriLinkEmbed ?>" target="_blank" rel="noopener noreferrer">
+                                    <div class="cms-partner-logo-wrap">
+                                        <img class="cms-partner-logo" loading="lazy" src="<?= $lgo->galeriFiles ?>" alt="Partner" onerror="this.onerror=null;this.src='data:image/svg+xml;charset=UTF-8,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27180%27 height=%2780%27%3E%3Crect width=%27180%27 height=%2780%27 fill=%27%23005BAC%27/%3E%3Ctext x=%2790%27 y=%2748%27 font-size=%2712%27 text-anchor=%27middle%27 fill=%27white%27 font-family=%27Inter,sans-serif%27%3EPartner%3C/text%3E%3C/svg%3E';">
+                                    </div>
                                 </a>
                             </div>
                     <?php }
