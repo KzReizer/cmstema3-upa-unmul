@@ -107,7 +107,7 @@
                     <?php
                     $newsCount = 0;
                     foreach ($berita as $row) {
-                        if ($newsCount >= 4) break;
+                                            if ($newsCount >= 3) break;
                         $detailSlug = !empty($row->{'kontenNama'.$lang}) ? $row->{'kontenNama'.$lang} : (isset($row->kontenNamaID) ? $row->kontenNamaID : '');
                         $rawExcerpt = strip_tags($row->{'kontenIsi'.$lang});
                         $wrappedExcerpt = wordwrap($rawExcerpt, 150);
