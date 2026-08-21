@@ -3,12 +3,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 ?><div role="main" class="main">
 
     <section class="cms-page-banner">
-        <div class="cms-page-banner-overlay"></div>
+        
         <div class="container cms-page-banner-content">
-            <ul class="breadcrumb">
-                <li><a href="<?php echo base_url() ?>">Home</a></li>
-                <li class="active">Informasi</li>
-            </ul>
+            
             <h1>Pencarian</h1>
         </div>
     </section>
@@ -21,11 +18,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <?php if ($keyword !== FALSE) :
                         if (empty($datasearch)) { ?>
                             <div>
-                                <p>Tidak ditemukan data dengan kata kunci "<?= $this->session->keyword ?>"</p>
+                                <p>Tidak ditemukan data dengan kata kunci "<?= htmlspecialchars($this->session->keyword, ENT_QUOTES, 'UTF-8') ?>"</p>
                             </div>
                         <?php } else { ?>
                             <div>
-                                <h4>Telah ditemukan <?= $datasearch !== false ? count($datasearch) : "" ?> konten dengan kata kunci "<?= $this->session->keyword ?>"</h4>
+                                <h4>Telah ditemukan <?= $datasearch !== false ? count($datasearch) : "" ?> konten dengan kata kunci "<?= htmlspecialchars($this->session->keyword, ENT_QUOTES, 'UTF-8') ?>"</h4>
                                 <br>
                             </div>
                         <?php }
@@ -54,7 +51,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     <div class="col-lg-7">
                                         <div class="list-content">
                                             <a href="<?= base_url(); ?>page/list/<?= strtolower($row->kategoriNama) ?>"><span class="badge badge-primary badge-sm" style="background:var(--cms-primary);padding:4px 12px;border-radius:var(--cms-radius-full);font-size:0.75rem;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;"><?= $row->kategoriNama ?></span></a>
-                                            <h4><a href="../../page/detail/<?= $row->{'kontenNama' . $lang} ?>"><?= $row->{'kontenJudul' . $lang} ?></a></h4>
+                                            <h4><a href="../../page/detail/<?= $row->{'kontenNama' . $lang} ?>"><?= htmlspecialchars($row->{'kontenJudul' . $lang}, ENT_QUOTES, 'UTF-8') ?></a></h4>
                                             <p><?= substr($row->{'kontenIsi' . $lang}, 0, strpos(wordwrap($row->{'kontenIsi' . $lang}, 200), "\n")); ?></p>
                                         </div>
                                     </div>

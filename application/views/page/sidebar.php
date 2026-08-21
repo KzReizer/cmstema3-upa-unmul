@@ -8,11 +8,11 @@
                     foreach ($terbaru as $row) { ?>
                         <li>
                             <div class="thumb">
-                                <img src="<?= $row->kontenBanner ?>" alt="<?= $row->{'kontenJudul' . $lang} ?>">
+                                <img src="<?= $row->kontenBanner ?>" alt="<?= htmlspecialchars($row->{'kontenJudul' . $lang}, ENT_QUOTES, 'UTF-8') ?>">
                             </div>
                             <div class="info">
                                 <a href="<?= base_url() ?>page/detail/<?= $row->{'kontenNama' . $lang} ?>">
-                                    <?= $row->{'kontenJudul' . $lang} ?>
+                                    <?= htmlspecialchars($row->{'kontenJudul' . $lang}, ENT_QUOTES, 'UTF-8') ?>
                                 </a>
                                 <span class="date"><i class="fa fa-calendar"></i> <?= !empty($row->kontenTanggal) ? datetoindo($row->kontenTanggal) : '' ?></span>
                             </div>
@@ -30,11 +30,11 @@
                     foreach ($pin as $row) { ?>
                         <li>
                             <div class="thumb">
-                                <img src="<?= $row->kontenBanner ?>" alt="<?= $row->{'kontenJudul' . $lang} ?>">
+                                <img src="<?= $row->kontenBanner ?>" alt="<?= htmlspecialchars($row->{'kontenJudul' . $lang}, ENT_QUOTES, 'UTF-8') ?>">
                             </div>
                             <div class="info">
                                 <a href="<?= base_url() ?>page/detail/<?= $row->{'kontenNama' . $lang} ?>">
-                                    <?= $row->{'kontenJudul' . $lang} ?>
+                                    <?= htmlspecialchars($row->{'kontenJudul' . $lang}, ENT_QUOTES, 'UTF-8') ?>
                                 </a>
                                 <span class="date"><i class="fa fa-calendar"></i> <?= !empty($row->kontenTanggal) ? datetoindo($row->kontenTanggal) : '' ?></span>
                             </div>
@@ -52,11 +52,11 @@
                     foreach ($pengumuman as $row) { ?>
                         <li>
                             <div class="thumb">
-                                <img src="<?= $row->kontenBanner ?>" alt="<?= $row->{'kontenJudul' . $lang} ?>">
+                                <img src="<?= $row->kontenBanner ?>" alt="<?= htmlspecialchars($row->{'kontenJudul' . $lang}, ENT_QUOTES, 'UTF-8') ?>">
                             </div>
                             <div class="info">
                                 <a href="<?= base_url() ?>page/detail/<?= $row->{'kontenNama' . $lang} ?>">
-                                    <?= $row->{'kontenJudul' . $lang} ?>
+                                    <?= htmlspecialchars($row->{'kontenJudul' . $lang}, ENT_QUOTES, 'UTF-8') ?>
                                 </a>
                                 <span class="date"><i class="fa fa-calendar"></i> <?= !empty($row->kontenTanggal) ? datetoindo($row->kontenTanggal) : '' ?></span>
                             </div>

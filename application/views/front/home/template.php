@@ -86,11 +86,6 @@
     $this->load->view('front/home/footer');
     ?>
 
-    <!-- Back to Top Button -->
-    <button class="cms-back-to-top" aria-label="<?= $lang == 'ID' ? 'Kembali ke atas' : 'Back to top' ?>">
-        <i class="fa fa-chevron-up"></i>
-    </button>
-
     <!-- Vendor Scripts -->
     <script src="<?php echo base_url(); ?>front/vendor/jquery/jquery.min.js"></script>
     <script src="<?php echo base_url(); ?>front/vendor/jquery.appear/jquery.appear.min.js"></script>

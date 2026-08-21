@@ -34,14 +34,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 <div class="card-image">
                                     <div class="img-thumbnail">
                                         <?php if (!empty($row->kontenBanner)) { ?>
-                                            <a href="<?=base_url()?>page/detail/<?= $detailSlug ?>"><img class="img-fluid" src="<?= $row->kontenBanner ?>" alt="<?= htmlentities($row->{'kontenJudul'.$lang}) ?>"></a>
+                                            <a href="<?=base_url()?>page/detail/<?= $detailSlug ?>"><img class="img-fluid" src="<?= $row->kontenBanner ?>" alt="<?= htmlspecialchars($row->{'kontenJudul'.$lang}, ENT_QUOTES, 'UTF-8') ?>"></a>
                                         <?php } else { ?>
                                             <a href="<?=base_url()?>page/detail/<?= $detailSlug ?>"><img alt="" class="img-fluid" src="<?=site_url('page/loadthumb/noimage.jpg');?>"></a>
                                         <?php } ?>
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <h4 class="card-title"><a href="<?=base_url()?>page/detail/<?= $detailSlug ?>"><?= $row->{'kontenJudul'.$lang} ?></a></h4>
+                                    <h4 class="card-title"><a href="<?=base_url()?>page/detail/<?= $detailSlug ?>"><?= htmlspecialchars($row->{'kontenJudul'.$lang}, ENT_QUOTES, 'UTF-8') ?></a></h4>
                                     <p class="card-excerpt"><?= $excerpt ?><?= mb_strlen($excerpt) < mb_strlen($rawExcerpt) ? '...' : '' ?></p>
                                     <div class="cms-detail-meta">
                                         <div class="meta-group">

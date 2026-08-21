@@ -36,7 +36,7 @@ class beranda extends MY_Controller{
 		$data['logounit']    = $this->model_konten->get_logounit($data['master']->temaId, 1);
 		$data['explore']     = $this->model_konten->get_explore($data['master']->temaId);
 		$data['logo']        = $this->model_konten->get_logo($data['master']->temaId);
-		$data['quote']       = $this->model_konten->get_quote($data['master']->temaId, 3);
+		$data['quote']       = $this->model_konten->get_quote($data['master']->temaId, 10);
 		$data['berita']      = $this->model_konten->get_konten('berita',$data['master']->temaId,4);
 		$data['kategori']    = $this->model_konten->get_kategori(3);
 		$data['kategoriiku'] = $this->model_konten->get_ref_table('ref_kategori_konten','kategoriId');

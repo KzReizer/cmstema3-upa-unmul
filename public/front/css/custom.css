@@ -362,22 +362,31 @@ img {
 /* item that has children indicator */
 .cms-navbar-nav > li.has-children > a::after,
 .cms-dropdown-menu li.has-children > a::after {
-  /* show a small pointer for top-level nav items and nested dropdown items
-     but avoid adding arrows to items inside the 'More' panel (they are not
-     direct children of .cms-navbar-nav). */
-  content: '▶';
+  content: "";
   display: inline-block;
+  width: 7px;
+  height: 7px;
   margin-left: 8px;
-  font-size: 0.7rem;
-  transform: translateY(0);
-  transition: transform 200ms ease;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(45deg) translateY(-1px);
+  transition: transform 200ms ease, border-color 200ms ease;
+  vertical-align: middle;
+  border-radius: 1px;
 }
 
-/* rotate arrow when open */
+/* softer chevron that feels less sharp */
 .cms-navbar-nav li.has-children.open > a::after,
 .cms-dropdown-menu li.has-children.open > a::after {
-  content: '▼';
-  transform: translateY(0);
+  transform: rotate(225deg) translate(-2px, -1px);
+}
+
+.cms-navbar a,
+.cms-navbar-nav a,
+.cms-dropdown-menu a,
+.cms-nav-btn,
+.cms-navbar-toggle {
+  text-decoration: none;
 }
 
 /* More dropdown styling (overflow) */
@@ -454,8 +463,15 @@ img {
     display: block;
   }
   .cms-navbar-nav li.has-children > a::after {
-    content: '\25BC'; /* down arrow */
+    content: "";
     float: right;
+    margin-top: 9px;
+    width: 7px;
+    height: 7px;
+    border-right: 1.5px solid currentColor;
+    border-bottom: 1.5px solid currentColor;
+    transform: rotate(45deg);
+    border-radius: 1px;
   }
 }
 
@@ -671,16 +687,6 @@ img {
   }
 }
 
-/* Featured card styles */
-.featured-card { border-radius: 16px; overflow: hidden; box-shadow: 0 12px 32px rgba(20,40,60,0.08); background: var(--cms-bg-card); }
-.featured-image img { width:100%; height:420px; object-fit:cover; display:block; }
-.featured-body { padding: 18px 20px 24px; }
-.featured-card h3 { margin: 0 0 12px 0; font-size: 1.45rem; }
-.featured-card .excerpt { color: var(--cms-text-light); margin-bottom: 0; }
-
-@media (max-width: 991px) {
-  .featured-image img { height: 260px; }
-}
 
 /* Mobile Menu */
 @media (max-width: 991px) {

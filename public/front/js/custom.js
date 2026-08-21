@@ -143,30 +143,7 @@
   }
 
   /* -------------------------------------------
-     4. Back to Top Button
-     ------------------------------------------- */
-  function initBackToTop() {
-    const btn = document.querySelector('.cms-back-to-top');
-    if (!btn) return;
-
-    window.addEventListener('scroll', function() {
-      if (window.scrollY > 400) {
-        btn.classList.add('visible');
-      } else {
-        btn.classList.remove('visible');
-      }
-    }, { passive: true });
-
-    btn.addEventListener('click', function() {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
-    });
-  }
-
-  /* -------------------------------------------
-     5. Counter Animation
+     4. Counter Animation
      ------------------------------------------- */
   function initCounters() {
     const counters = document.querySelectorAll('.cms-stat-card strong[data-to]');
@@ -510,7 +487,6 @@
     initNavbar();
     initMobileMenu();
     initDarkMode();
-    initBackToTop();
     initCounters();
     initHeroStats();
     initSmoothScroll();
