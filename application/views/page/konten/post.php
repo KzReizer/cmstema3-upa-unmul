@@ -16,8 +16,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<div class="col-12">
 				<div class="cms-content-article">
 					<div class="cms-detail-body">
-						<p><?= $datas!=false?$datas->{'pageContent'.$lang}:""?></p>
-						<i class="fa fa-tag"> <?= $datas!=false?$datas->{'pageTag'.$lang}:""?></i>
+						<?= $datas != false ? $datas->{'pageContent'.$lang} : "" ?>
+						<?php if ($datas != false && !empty($datas->{'pageTag'.$lang})) : ?>
+							<div class="cms-detail-tag"><i class="fa fa-tag" aria-hidden="true"></i> <?= $datas->{'pageTag'.$lang} ?></div>
+						<?php endif; ?>
 					</div>
 				</div>
 			</div>

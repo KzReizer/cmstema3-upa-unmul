@@ -52,7 +52,7 @@
 
     <!-- ===== CMS Custom Premium Styles ===== -->
     <link rel="stylesheet" href="<?php echo base_url(); ?>front/css/custom.css">
-    <link rel="stylesheet" href="<?php echo base_url(); ?>front/css/custom1.css">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>front/css/custom1.css?v=20260821-11">
     <link rel="stylesheet" href="<?php echo base_url(); ?>front/css/drawer.css">
 
     <!-- Head Libs -->
@@ -61,9 +61,15 @@
     <!-- Dark Mode Initial Script (prevents flash) -->
     <script>
         (function() {
-            var theme = localStorage.getItem('cms-theme');
+            var theme = null;
+            try {
+                theme = localStorage.getItem('cms-theme');
+            } catch (error) {
+                // Continue normally when browser privacy settings disable storage.
+            }
             if (theme === 'dark') {
                 document.documentElement.setAttribute('data-theme', 'dark');
+                document.documentElement.classList.add('dark');
             }
         })();
     </script>
@@ -116,7 +122,7 @@
     <script src="<?php echo base_url(); ?>front/js/theme.init.js"></script>
 
     <!-- ===== CMS Custom Premium Script ===== -->
-    <script src="<?php echo base_url(); ?>front/js/custom.js"></script>
+    <script src="<?php echo base_url(); ?>front/js/custom.js?v=20260821-3"></script>
 
     
 

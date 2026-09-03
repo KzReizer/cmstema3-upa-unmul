@@ -142,6 +142,60 @@
     });
   }
 
+  /* The CMS uses data-theme while the legacy vendor stylesheet uses html.dark.
+     Sync both selectors so every component changes colour together. */
+  function initUnifiedDarkMode() {
+    const toggle = document.querySelector('.cms-dark-toggle');
+    if (!toggle) return;
+
+    const html = document.documentElement;
+    const thumb = toggle.querySelector('.cms-dark-toggle-thumb');
+    const darkLabel = toggle.getAttribute('aria-label') || 'Enable dark mode';
+    const lightLabel = html.lang === 'id' ? 'Aktifkan mode terang' : 'Enable light mode';
+
+    const setTheme = (isDark, persist) => {
+      // Use explicit attributes instead of toggleAttribute for compatibility,
+      // and mirror the state on body for vendor components that cache selectors.
+      if (isDark) {
+        html.setAttribute('data-theme', 'dark');
+      } else {
+        html.removeAttribute('data-theme');
+      }
+      html.classList.toggle('dark', isDark);
+      document.body.classList.toggle('dark', isDark);
+      toggle.setAttribute('aria-pressed', String(isDark));
+      toggle.setAttribute('aria-label', isDark ? lightLabel : darkLabel);
+
+      if (thumb) {
+        thumb.innerHTML = '<i class="fa ' + (isDark ? 'fa-moon-o' : 'fa-sun-o') + '"></i>';
+      }
+
+      if (persist) {
+        try {
+          localStorage.setItem('cms-theme', isDark ? 'dark' : 'light');
+        } catch (error) {
+          // Theme remains usable if local storage is unavailable.
+        }
+      }
+
+      // Make the new CSS variables and legacy html.dark rules repaint now,
+      // rather than waiting for the next navigation or browser refresh.
+      void html.offsetHeight;
+    };
+
+    let savedTheme = null;
+    try {
+      savedTheme = localStorage.getItem('cms-theme');
+    } catch (error) {
+      // Theme starts in light mode when privacy settings disable storage.
+    }
+    setTheme(savedTheme === 'dark', false);
+
+    toggle.addEventListener('click', () => {
+      setTheme(html.getAttribute('data-theme') !== 'dark', true);
+    });
+  }
+
   /* -------------------------------------------
      4. Counter Animation
      ------------------------------------------- */
@@ -486,7 +540,7 @@
   $(document).ready(function() {
     initNavbar();
     initMobileMenu();
-    initDarkMode();
+    initUnifiedDarkMode();
     initCounters();
     initHeroStats();
     initSmoothScroll();

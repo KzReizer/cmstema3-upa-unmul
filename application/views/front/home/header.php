@@ -125,7 +125,7 @@
             </div>
 
             <!-- Dark Mode Toggle -->
-            <button class="cms-dark-toggle" aria-label="<?= $lang == 'ID' ? 'Mode gelap' : 'Dark mode' ?>">
+            <button class="cms-dark-toggle" type="button" aria-label="<?= $lang == 'ID' ? 'Aktifkan mode gelap' : 'Enable dark mode' ?>" aria-pressed="false">
                 <span class="cms-dark-toggle-thumb">☀️</span>
             </button>
 

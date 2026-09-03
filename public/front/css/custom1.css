@@ -525,3 +525,322 @@
   }
 }
 
+/* -------------------------------------------
+   Dark mode compatibility layer
+   The legacy theme uses html.dark; the CMS uses data-theme. These final rules
+   always load last and prevent either system from leaving a light surface.
+   ------------------------------------------- */
+html[data-theme="dark"],
+html[data-theme="dark"] body,
+html[data-theme="dark"] .body {
+  background: #0f172a;
+  color: #e2e8f0;
+}
+
+html[data-theme="dark"] .cms-navbar.scrolled,
+html[data-theme="dark"] .cms-drawer {
+  background: rgba(15, 23, 42, 0.96);
+  border-color: rgba(148, 163, 184, 0.16);
+}
+
+html[data-theme="dark"] .cms-navbar.scrolled .cms-navbar-nav > li > a,
+html[data-theme="dark"] .cms-navbar.scrolled .brand-top,
+html[data-theme="dark"] .cms-navbar.scrolled .cms-nav-btn,
+html[data-theme="dark"] .cms-navbar.scrolled .cms-navbar-toggle,
+html[data-theme="dark"] .cms-navbar.scrolled .cms-dark-toggle {
+  color: #e2e8f0;
+}
+
+html[data-theme="dark"] .cms-navbar.scrolled .cms-nav-btn,
+html[data-theme="dark"] .cms-navbar.scrolled .cms-navbar-toggle,
+html[data-theme="dark"] .cms-navbar.scrolled .cms-dark-toggle {
+  background: #1e293b;
+  border-color: rgba(148, 163, 184, 0.18);
+}
+
+html[data-theme="dark"] .cms-content-page {
+  background: #0f172a;
+  background-image: none;
+}
+
+html[data-theme="dark"] .cms-content-article,
+html[data-theme="dark"] .cms-content-list-item,
+html[data-theme="dark"] .news-card .card,
+html[data-theme="dark"] .cms-sidebar-card,
+html[data-theme="dark"] .cms-pub-card,
+html[data-theme="dark"] .cms-dropdown-menu,
+html[data-theme="dark"] .cms-lang-menu {
+  background-color: #1e293b;
+  color: #e2e8f0;
+  border-color: rgba(148, 163, 184, 0.16);
+}
+
+html[data-theme="dark"] .cms-content-article h1,
+html[data-theme="dark"] .cms-content-article h2,
+html[data-theme="dark"] .cms-content-article h3,
+html[data-theme="dark"] .cms-content-article h4,
+html[data-theme="dark"] .cms-content-article h5,
+html[data-theme="dark"] .cms-content-list-item h4,
+html[data-theme="dark"] .cms-sidebar-card h4,
+html[data-theme="dark"] .news-card .card-title a,
+html[data-theme="dark"] .cms-sidebar-list .info a,
+html[data-theme="dark"] .cms-lang-item {
+  color: #e2e8f0;
+}
+
+html[data-theme="dark"] .cms-content-article p,
+html[data-theme="dark"] .cms-content-article li,
+html[data-theme="dark"] .cms-detail-body,
+html[data-theme="dark"] .cms-detail-body p,
+html[data-theme="dark"] .cms-content-list-item p,
+html[data-theme="dark"] .news-card .card-excerpt,
+html[data-theme="dark"] .cms-detail-meta,
+html[data-theme="dark"] .cms-sidebar-list .date {
+  color: #cbd5e1;
+}
+
+html[data-theme="dark"] .cms-nav-search-input,
+html[data-theme="dark"] .cms-search-form .form-control,
+html[data-theme="dark"] .cms-drawer-search input {
+  background: #0f172a;
+  color: #e2e8f0;
+  border-color: rgba(148, 163, 184, 0.25);
+}
+
+html[data-theme="dark"] .cms-nav-search-input::placeholder,
+html[data-theme="dark"] .cms-search-form .form-control::placeholder,
+html[data-theme="dark"] .cms-drawer-search input::placeholder {
+  color: #94a3b8;
+}
+
+/* -------------------------------------------
+   Internal page layout normalization
+   ------------------------------------------- */
+.cms-content-page {
+  max-width: 1280px;
+}
+
+/* Keep light mode as clean as dark mode: one flat page canvas, with cards
+   providing the visual hierarchy rather than a competing background gradient. */
+.main,
+.cms-content-page,
+.cms-content-page::before {
+  background-color: #f8fafc;
+  background-image: none;
+}
+
+.cms-content-article {
+  padding: clamp(24px, 3vw, 44px);
+  border-radius: 20px;
+  box-shadow: 0 16px 42px rgba(15, 23, 42, 0.08);
+}
+
+.cms-detail-body {
+  color: #334155;
+  font-size: 1rem;
+  line-height: 1.85;
+}
+
+.cms-detail-body > * {
+  max-width: 100%;
+}
+
+.cms-detail-body > * + * {
+  margin-top: 1.25rem;
+}
+
+.cms-detail-body p,
+.cms-detail-body li {
+  color: inherit;
+  line-height: inherit;
+}
+
+.cms-detail-body h2,
+.cms-detail-body h3,
+.cms-detail-body h4 {
+  color: #0f172a;
+  line-height: 1.35;
+  margin-bottom: 0.4rem;
+}
+
+.cms-detail-body ul,
+.cms-detail-body ol {
+  padding-left: 1.35rem;
+}
+
+.cms-detail-body blockquote {
+  margin-left: 0;
+  padding: 1rem 1.25rem;
+  border-left: 4px solid var(--cms-primary);
+  border-radius: 0 var(--cms-radius-sm) var(--cms-radius-sm) 0;
+  background: var(--cms-primary-light);
+  color: #334155;
+}
+
+.cms-detail-body img,
+.cms-detail-body iframe,
+.cms-detail-body video {
+  display: block;
+  width: 100%;
+  margin: 1.5rem auto;
+  border-radius: var(--cms-radius-md);
+}
+
+.cms-detail-body table {
+  display: block;
+  overflow-x: auto;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.cms-detail-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.75rem;
+  padding: 0.55rem 0.9rem;
+  border-radius: var(--cms-radius-full);
+  background: var(--cms-primary-light);
+  color: var(--cms-primary);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+/* Neutralize inline width:100% on legacy nested Bootstrap rows inside cards. */
+.cms-content-list-item > .row,
+.cms-content-list-item .list-content > .row {
+  width: auto !important;
+  margin-left: -12px;
+  margin-right: -12px;
+}
+
+.cms-content-list-item > .row > [class*="col-"],
+.cms-content-list-item .list-content > .row > [class*="col-"] {
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+html[data-theme="dark"] .cms-content-article {
+  background: #1e293b;
+  border-color: rgba(148, 163, 184, 0.18);
+  box-shadow: 0 18px 46px rgba(2, 6, 23, 0.38);
+}
+
+/* Internal pages use one flat dark canvas—no radial/gradient colour bands. */
+html[data-theme="dark"] .main,
+html[data-theme="dark"] .cms-content-page,
+html[data-theme="dark"] .cms-content-page::before {
+  background-color: #0f172a;
+  background-image: none;
+}
+
+html[data-theme="dark"] .cms-detail-body,
+html[data-theme="dark"] .cms-detail-body p,
+html[data-theme="dark"] .cms-detail-body li {
+  color: #cbd5e1;
+}
+
+html[data-theme="dark"] .cms-detail-body h2,
+html[data-theme="dark"] .cms-detail-body h3,
+html[data-theme="dark"] .cms-detail-body h4 {
+  color: #f8fafc;
+}
+
+html[data-theme="dark"] .cms-detail-body blockquote {
+  background: rgba(0, 91, 172, 0.18);
+  color: #dbeafe;
+}
+
+html[data-theme="dark"] .cms-detail-tag {
+  background: rgba(0, 91, 172, 0.24);
+  color: #bfdbfe;
+}
+
+@media (max-width: 575px) {
+  .cms-content-article {
+    padding: 22px 20px;
+    border-radius: 16px;
+  }
+
+  .cms-detail-body {
+    font-size: 0.98rem;
+    line-height: 1.8;
+  }
+}
+
+/* -------------------------------------------
+   Quiet academic texture
+   ------------------------------------------- */
+/* A near-white paper grain gives long pages a premium surface without adding
+   visual noise. It is intentionally subtle and is never placed on cards. */
+.main,
+.cms-content-page,
+.cms-profile-section,
+.cms-partner-section,
+#berita-home {
+  background-color: #f8fafc;
+  background-image: url('../img/patterns/subtle_grunge.png');
+  background-repeat: repeat;
+  background-size: 400px 400px;
+  background-blend-mode: soft-light;
+  
+}
+
+/* A 4% technical grid is reserved for the page banner only. */
+.cms-page-banner {
+  background: #07528f;
+  min-height: 320px;
+}
+
+.cms-page-banner::before {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.055) 1px, transparent 1px);
+  background-size: 34px 34px;
+  opacity: 1;
+}
+
+.cms-page-banner-overlay {
+  background: rgba(0, 48, 91, 0.5);
+}
+
+.cms-page-banner-content {
+  padding-top: 142px;
+  padding-bottom: 68px;
+}
+
+.cms-page-banner-content h1 {
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+html[data-theme="dark"] .main,
+html[data-theme="dark"] .cms-content-page,
+html[data-theme="dark"] .cms-profile-section,
+html[data-theme="dark"] .cms-partner-section,
+html[data-theme="dark"] #berita-home {
+  background-color: #0f172a;
+  background-image: none;
+}
+
+html[data-theme="dark"] .cms-page-banner {
+  background: #07335e;
+}
+
+html[data-theme="dark"] .cms-page-banner::before {
+  background-image:
+    linear-gradient(rgba(191, 219, 254, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(191, 219, 254, 0.04) 1px, transparent 1px);
+}
+
+@media (max-width: 575px) {
+  .cms-page-banner {
+    min-height: 260px;
+  }
+
+  .cms-page-banner-content {
+    padding: 112px 24px 44px;
+  }
+}
+

@@ -306,7 +306,7 @@ img {
 /* Dropdown */
 .cms-dropdown-menu {
   position: absolute;
-  top: 100%;
+  top: 50px;
   left: 0;
   min-width: 240px;
   background: var(--cms-bg-card);
@@ -1511,6 +1511,7 @@ img {
 .cms-partner-section {
   background: var(--cms-bg);
   padding: 48px 0;
+  
 }
 
 .cms-partner-section .cms-section-heading {
@@ -1539,6 +1540,7 @@ img {
   border-radius: 18px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
   transition: transform 0.3s ease, background 0.3s ease, border-color 0.3s ease;
+  margin: 30px 10px;
 }
 
 .cms-partner-card:hover {
@@ -1897,6 +1899,155 @@ img {
 /* Smooth Scrolling */
 html {
   scroll-behavior: smooth;
+}
+
+/* -------------------------------------------
+   13. Site-wide polish: links, spacing & imagery
+   ------------------------------------------- */
+/* Keep navigation and card links minimalist without removing the focus state. */
+.main a,
+.cms-footer a,
+.cms-navbar a,
+.cms-drawer a,
+.cms-sidebar a,
+.cms-btn,
+.pagination a {
+  text-decoration: none !important;
+}
+
+.main a:focus-visible,
+.cms-footer a:focus-visible,
+.cms-navbar a:focus-visible,
+.cms-drawer a:focus-visible,
+.cms-sidebar a:focus-visible,
+.cms-btn:focus-visible,
+.pagination a:focus-visible {
+  outline: 2px solid var(--cms-accent);
+  outline-offset: 3px;
+  text-decoration: none !important;
+}
+
+.cms-page-banner-content {
+  padding-left: 32px;
+  padding-right: 32px;
+}
+
+/* Make content pages feel intentional rather than floating on a blank canvas. */
+.cms-content-page {
+  position: relative;
+  isolation: isolate;
+  padding-top: 56px;
+  padding-bottom: 76px;
+}
+
+.cms-content-page::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  background:
+    radial-gradient(circle at 8% 12%, rgba(0, 91, 172, 0.07), transparent 20rem),
+    radial-gradient(circle at 92% 88%, rgba(0, 150, 136, 0.06), transparent 18rem);
+  pointer-events: none;
+}
+
+.cms-content-page > * {
+  position: relative;
+  z-index: 1;
+}
+
+.cms-content-article,
+.cms-content-list-item,
+.news-card .card,
+.cms-sidebar-card {
+  border: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.news-card .card-body {
+  padding: 26px 24px 24px;
+}
+
+.news-card .card-title a,
+.cms-content-list-item h4 a,
+.cms-sidebar-list .info a {
+  color: var(--cms-text);
+}
+
+.news-card .card-title a:hover,
+.cms-content-list-item h4 a:hover,
+.cms-sidebar-list .info a:hover {
+  color: var(--cms-primary);
+}
+
+@media (max-width: 575px) {
+  .cms-section {
+    padding: 52px 0;
+  }
+
+  .cms-page-banner {
+    min-height: 220px;
+  }
+
+  .cms-page-banner-content {
+    padding: 96px 20px 32px;
+  }
+
+  /* The list uses nested Bootstrap rows; restore a predictable 20px gutter. */
+  .cms-content-page.container {
+    width: 100%;
+    max-width: none;
+    padding: 36px 20px 56px;
+  }
+
+  .cms-content-page > .row,
+  .cms-content-page .news-grid.row {
+    margin-left: -8px;
+    margin-right: -8px;
+  }
+
+  .cms-content-page .news-card,
+  .news-grid > .news-card {
+    padding-left: 8px;
+    padding-right: 8px;
+    margin-bottom: 16px;
+  }
+
+  .news-card .card {
+    border-radius: 15px;
+    box-shadow: 0 9px 24px rgba(15, 23, 42, 0.08);
+  }
+
+  .news-card .card-body {
+    padding: 22px 20px 20px;
+  }
+
+  .news-card .card-image .img-thumbnail {
+    height: 190px;
+  }
+
+  .cms-content-article,
+  .cms-content-list-item,
+  .cms-sidebar-card {
+    padding: 20px;
+    border-radius: 14px;
+  }
+
+  .cms-detail-meta {
+    gap: 0.8rem;
+  }
+}
+
+[data-theme="dark"] .cms-content-article,
+[data-theme="dark"] .cms-content-list-item,
+[data-theme="dark"] .news-card .card,
+[data-theme="dark"] .cms-sidebar-card {
+  border-color: rgba(148, 163, 184, 0.16);
+}
+
+[data-theme="dark"] .news-card .card-title a,
+[data-theme="dark"] .cms-content-list-item h4 a,
+[data-theme="dark"] .cms-sidebar-list .info a {
+  color: var(--cms-text);
 }
 
 /* Focus visible for accessibility */
