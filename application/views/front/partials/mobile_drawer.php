@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <div class="cms-drawer-backdrop" data-drawer-backdrop hidden></div>
-<div class="cms-drawer" data-drawer hidden aria-hidden="true" role="dialog" aria-modal="true" aria-label="Mobile navigation">
+<div class="cms-drawer" id="cmsMobileDrawer" data-drawer hidden aria-hidden="true" role="dialog" aria-modal="true" aria-label="Mobile navigation">
     <div class="cms-drawer-header">
         <button class="cms-drawer-close" data-drawer-close aria-label="Close menu">
             <i class="fa fa-times"></i>

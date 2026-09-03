@@ -40,9 +40,11 @@
     const drawer = document.querySelector('[data-drawer]');
     const backdrop = document.querySelector('[data-drawer-backdrop]');
     if (!toggle || !drawer || !backdrop) return;
+    let lastFocusedElement = null;
 
     // Open drawer
     const openDrawer = () => {
+      lastFocusedElement = document.activeElement;
       drawer.hidden = false;
       backdrop.hidden = false;
       // allow CSS to paint
@@ -51,6 +53,8 @@
         backdrop.classList.add('visible');
         document.body.classList.add('cms-drawer-open');
         drawer.setAttribute('aria-hidden', 'false');
+        toggle.classList.add('active');
+        toggle.setAttribute('aria-expanded', 'true');
         // focus first element inside drawer for accessibility
         const focusable = drawer.querySelectorAll('a,button,input,textarea,select,[tabindex]:not([tabindex="-1"])');
         if (focusable.length) focusable[0].focus();
@@ -67,7 +71,13 @@
       setTimeout(() => {
         drawer.hidden = true;
         backdrop.hidden = true;
-        toggle.focus();
+        toggle.classList.remove('active');
+        toggle.setAttribute('aria-expanded', 'false');
+        if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+          lastFocusedElement.focus();
+        } else {
+          toggle.focus();
+        }
       }, 320);
     };
 
@@ -783,4 +793,3 @@
   }
 
 })(jQuery);
-

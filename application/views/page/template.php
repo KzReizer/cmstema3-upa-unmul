@@ -55,7 +55,7 @@
     <!-- ===== CMS Custom Premium Styles ===== -->
     <link rel="stylesheet" href="<?php echo base_url(); ?>front/css/custom.css">
     <link rel="stylesheet" href="<?php echo base_url(); ?>front/css/custom1.css?v=20260821-11">
-    <link rel="stylesheet" href="<?php echo base_url(); ?>front/css/drawer.css">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>front/css/drawer.css?v=20260903-1">
 
     <!-- Head Libs -->
     <script src="<?php echo base_url(); ?>front/vendor/modernizr/modernizr.min.js"></script>
@@ -123,7 +123,7 @@
     <script src="<?php echo base_url(); ?>front/js/views/view.home.js"></script>
 
     <!-- Theme Custom -->
-    <script src="<?php echo base_url(); ?>front/js/custom.js?v=20260821-3"></script>
+    <script src="<?php echo base_url(); ?>front/js/custom.js?v=20260903-1"></script>
 
     <!-- Theme Initialization Files -->
     <script src="<?php echo base_url(); ?>front/js/theme.init.js"></script>

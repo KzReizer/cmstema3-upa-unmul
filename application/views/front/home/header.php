@@ -146,7 +146,7 @@
             </button>
 
             <!-- Mobile Toggle -->
-            <button class="cms-navbar-toggle" aria-label="<?= $lang == 'ID' ? 'Buka menu' : 'Toggle menu' ?>">
+            <button class="cms-navbar-toggle" type="button" aria-expanded="false" aria-controls="cmsMobileDrawer" aria-label="<?= $lang == 'ID' ? 'Buka menu' : 'Toggle menu' ?>">
                 <span></span>
             </button>
         </div>
