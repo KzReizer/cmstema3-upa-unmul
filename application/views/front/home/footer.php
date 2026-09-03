@@ -46,7 +46,15 @@
         }
 
         $mapEmbed = '';
-        if (!empty($master->footMapEmbed)) {
+        $mapLink = '';
+        if (!empty($master->footMap)) {
+            $mapLink = trim($master->footMap);
+            if (stripos($mapLink, 'maps/embed') !== false) {
+                $mapEmbed = $mapLink;
+            } elseif (!empty($master->footAlamat)) {
+                $mapEmbed = 'https://www.google.com/maps?q='.urlencode($master->footAlamat).'&amp;output=embed';
+            }
+        } elseif (!empty($master->footMapEmbed)) {
             $mapEmbed = $master->footMapEmbed;
         } elseif (!empty($master->footLat) && !empty($master->footLng)) {
             $mapEmbed = 'https://www.google.com/maps?q='.urlencode($master->footLat.','.$master->footLng).'&amp;output=embed';
@@ -134,8 +142,14 @@
                     <div class="cms-footer-widget">
                         <h4><?= $lang == 'ID' ? 'Lokasi' : 'Location' ?></h4>
                         <div class="cms-footer-map">
-                            <iframe src="<?= $mapEmbed ?>" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="<?= $lang == 'ID' ? 'Lokasi Kampus' : 'Campus Location' ?>"></iframe>
+                            <iframe src="<?= $mapEmbed ?>" allow="fullscreen" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="<?= $lang == 'ID' ? 'Peta lokasi kampus yang dapat digeser dan dizoom' : 'Interactive campus location map' ?>"></iframe>
                         </div>
+                        <?php if (!empty($mapLink)): ?>
+                            <a class="cms-footer-map-link" href="<?= $mapLink ?>" target="_blank" rel="noopener noreferrer">
+                                <i class="fa fa-external-link"></i>
+                                <?= $lang == 'ID' ? 'Buka di Google Maps' : 'Open in Google Maps' ?>
+                            </a>
+                        <?php endif; ?>
                     </div>
                 </div>
             <?php endif; ?>

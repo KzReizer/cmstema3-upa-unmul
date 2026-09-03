@@ -155,12 +155,10 @@
   /* The CMS uses data-theme while the legacy vendor stylesheet uses html.dark.
      Sync both selectors so every component changes colour together. */
   function initUnifiedDarkMode() {
-    const toggle = document.querySelector('.cms-dark-toggle');
-    if (!toggle) return;
+    const toggles = Array.from(document.querySelectorAll('.cms-theme-option'));
+    if (!toggles.length) return;
 
     const html = document.documentElement;
-    const thumb = toggle.querySelector('.cms-dark-toggle-thumb');
-    const darkLabel = toggle.getAttribute('aria-label') || 'Enable dark mode';
     const lightLabel = html.lang === 'id' ? 'Aktifkan mode terang' : 'Enable light mode';
 
     const setTheme = (isDark, persist) => {
@@ -173,12 +171,18 @@
       }
       html.classList.toggle('dark', isDark);
       document.body.classList.toggle('dark', isDark);
-      toggle.setAttribute('aria-pressed', String(isDark));
-      toggle.setAttribute('aria-label', isDark ? lightLabel : darkLabel);
-
-      if (thumb) {
-        thumb.innerHTML = '<i class="fa ' + (isDark ? 'fa-moon-o' : 'fa-sun-o') + '"></i>';
-      }
+      toggles.forEach(toggle => {
+        const isSelected = toggle.getAttribute('data-theme-choice') === (isDark ? 'dark' : 'light');
+        toggle.setAttribute('aria-pressed', String(isSelected));
+        toggle.classList.toggle('active', isSelected);
+      });
+      const switches = document.querySelectorAll('.cms-theme-switch');
+      switches.forEach(themeSwitch => {
+        themeSwitch.classList.remove('theme-changing');
+        void themeSwitch.offsetWidth;
+        themeSwitch.classList.add('theme-changing');
+        setTimeout(() => themeSwitch.classList.remove('theme-changing'), 320);
+      });
 
       if (persist) {
         try {
@@ -201,8 +205,10 @@
     }
     setTheme(savedTheme === 'dark', false);
 
-    toggle.addEventListener('click', () => {
-      setTheme(html.getAttribute('data-theme') !== 'dark', true);
+    toggles.forEach(toggle => {
+      toggle.addEventListener('click', () => {
+        setTheme(toggle.getAttribute('data-theme-choice') === 'dark', true);
+      });
     });
   }
 

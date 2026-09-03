@@ -44,8 +44,27 @@
         </nav>
 
         <div class="cms-drawer-footer">
-            <div class="cms-drawer-lang">
-                <a href="javascript:void(0)" class="lang" lang-value="EN">EN</a> | <a href="javascript:void(0)" class="lang" lang-value="ID">ID</a>
+            <div class="cms-drawer-footer-heading">
+                <span><?= $lang == 'ID' ? 'Pengaturan' : 'Settings' ?></span>
+            </div>
+            <div class="cms-drawer-lang" role="group" aria-label="<?= $lang == 'ID' ? 'Pilih bahasa' : 'Choose language' ?>">
+                <span class="cms-drawer-lang-label"><?= $lang == 'ID' ? 'Bahasa' : 'Language' ?></span>
+                <a href="javascript:void(0)" class="lang <?= $lang == 'EN' ? 'active' : '' ?>" lang-value="EN">English</a>
+                <a href="javascript:void(0)" class="lang <?= $lang == 'ID' ? 'active' : '' ?>" lang-value="ID">Indonesia</a>
+            </div>
+            <div class="cms-theme-switch cms-drawer-theme-switch" role="group" aria-label="<?= $lang == 'ID' ? 'Pilih tema' : 'Choose theme' ?>">
+                <span class="cms-drawer-setting-label"><?= $lang == 'ID' ? 'Tampilan' : 'Appearance' ?></span>
+                <div class="cms-theme-options">
+                    <button class="cms-theme-option" type="button" data-theme-choice="light" aria-label="<?= $lang == 'ID' ? 'Mode terang' : 'Light mode' ?>" aria-pressed="false">
+                        <i class="fa fa-sun-o" aria-hidden="true"></i><span><?= $lang == 'ID' ? 'Terang' : 'Light' ?></span>
+                    </button>
+                    <button class="cms-theme-option" type="button" data-theme-choice="dark" aria-label="<?= $lang == 'ID' ? 'Mode gelap' : 'Dark mode' ?>" aria-pressed="false">
+                        <i class="fa fa-moon-o" aria-hidden="true"></i><span><?= $lang == 'ID' ? 'Gelap' : 'Dark' ?></span>
+                    </button>
+                </div>
+            </div>
+            <div class="cms-drawer-footer-note">
+                <?= $lang == 'ID' ? 'Sesuaikan tampilan dan bahasa situs.' : 'Customize the site language and appearance.' ?>
             </div>
         </div>
     </div>

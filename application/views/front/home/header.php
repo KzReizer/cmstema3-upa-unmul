@@ -124,10 +124,15 @@
                 </div>
             </div>
 
-            <!-- Dark Mode Toggle -->
-            <button class="cms-dark-toggle" type="button" aria-label="<?= $lang == 'ID' ? 'Aktifkan mode gelap' : 'Enable dark mode' ?>" aria-pressed="false">
-                <span class="cms-dark-toggle-thumb">☀️</span>
-            </button>
+            <!-- Theme Selector -->
+            <div class="cms-theme-switch" role="group" aria-label="<?= $lang == 'ID' ? 'Pilih tema' : 'Choose theme' ?>">
+                <button class="cms-theme-option" type="button" data-theme-choice="light" aria-label="<?= $lang == 'ID' ? 'Mode terang' : 'Light mode' ?>" aria-pressed="false">
+                    <i class="fa fa-sun-o" aria-hidden="true"></i><span><?= $lang == 'ID' ? 'Terang' : 'Light' ?></span>
+                </button>
+                <button class="cms-theme-option" type="button" data-theme-choice="dark" aria-label="<?= $lang == 'ID' ? 'Mode gelap' : 'Dark mode' ?>" aria-pressed="false">
+                    <i class="fa fa-moon-o" aria-hidden="true"></i><span><?= $lang == 'ID' ? 'Gelap' : 'Dark' ?></span>
+                </button>
+            </div>
 
 <!-- Inline Expanding Search Box -->
             <div class="cms-nav-search" id="cmsNavSearch">
