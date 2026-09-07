@@ -125,12 +125,14 @@
             </div>
 
             <!-- Theme Selector -->
-            <div class="cms-theme-switch" role="group" aria-label="<?= $lang == 'ID' ? 'Pilih tema' : 'Choose theme' ?>">
-                <button class="cms-theme-option" type="button" data-theme-choice="light" aria-label="<?= $lang == 'ID' ? 'Mode terang' : 'Light mode' ?>" aria-pressed="false">
-                    <i class="fa fa-sun-o" aria-hidden="true"></i><span><?= $lang == 'ID' ? 'Terang' : 'Light' ?></span>
-                </button>
-                <button class="cms-theme-option" type="button" data-theme-choice="dark" aria-label="<?= $lang == 'ID' ? 'Mode gelap' : 'Dark mode' ?>" aria-pressed="false">
-                    <i class="fa fa-moon-o" aria-hidden="true"></i><span><?= $lang == 'ID' ? 'Gelap' : 'Dark' ?></span>
+            <div class="cms-theme-switch cms-theme-slider" role="group" aria-label="<?= $lang == 'ID' ? 'Pilih tema' : 'Choose theme' ?>">
+                <button class="cms-theme-slider-toggle" type="button" data-theme-toggle aria-checked="false" role="switch" aria-label="<?= $lang == 'ID' ? 'Aktifkan mode gelap' : 'Enable dark mode' ?>">
+                    <span class="cms-theme-slider-track" aria-hidden="true">
+                        <i class="fa fa-sun-o cms-theme-slider-sun"></i>
+                        <i class="fa fa-moon-o cms-theme-slider-moon"></i>
+                        <span class="cms-theme-slider-thumb"></span>
+                    </span>
+                    <span class="sr-only"><?= $lang == 'ID' ? 'Ganti tema' : 'Toggle theme' ?></span>
                 </button>
             </div>
 

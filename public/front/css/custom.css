@@ -183,6 +183,16 @@ img {
   padding: 0;
 }
 
+@media (min-width: 992px) {
+  .cms-navbar {
+    transition: transform 360ms cubic-bezier(0.22, 1, 0.36, 1), height 320ms ease;
+  }
+
+  .cms-navbar.nav-hidden {
+    transform: translateY(-110%);
+  }
+}
+
 .cms-navbar.scrolled {
   height: var(--cms-navbar-scrolled-height);
   background: var(--cms-glass-bg);
@@ -252,6 +262,8 @@ img {
 
   .cms-navbar.scrolled .cms-navbar-inner {
     height: 58px;
+    padding-left: 14px;
+    padding-right: 14px;
     border-color: rgba(255, 255, 255, 0.3);
     border-radius: 18px;
     background:
@@ -279,6 +291,19 @@ img {
     background:
       linear-gradient(135deg, rgba(51, 65, 85, 0.72), rgba(15, 23, 42, 0.72) 52%, rgba(30, 41, 59, 0.66)),
       rgba(15, 23, 42, 0.64);
+  }
+
+  .cms-navbar.scrolled .cms-navbar-nav {
+    gap: 2px;
+  }
+
+  .cms-navbar.scrolled .cms-navbar-nav > li > a {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+
+  .cms-navbar.scrolled .cms-navbar-actions {
+    gap: 6px;
   }
 }
 
@@ -339,6 +364,7 @@ img {
   list-style: none;
   margin: 0;
   padding: 0;
+  transition: gap 320ms ease;
 }
 
 .cms-navbar-nav > li {
@@ -568,6 +594,7 @@ img {
   display: flex;
   align-items: center;
   gap: 8px;
+  transition: gap 320ms ease;
 }
 
 .cms-nav-btn {
@@ -1973,6 +2000,107 @@ html[data-theme="dark"] .cms-theme-switch { border-color: rgba(148,163,184,0.28)
 html[data-theme="dark"] .cms-theme-option { color: rgba(226,232,240,0.78); }
 html[data-theme="dark"] .cms-theme-option:hover, html[data-theme="dark"] .cms-theme-option:focus-visible { background: rgba(148,163,184,0.14); color: #fff; }
 html[data-theme="dark"] .cms-theme-option[aria-pressed="true"] { background: rgba(51,125,190,0.92); color: #fff; box-shadow: 0 3px 12px rgba(2,6,23,0.35), inset 0 1px 0 rgba(255,255,255,0.24); }
+
+/* Desktop theme slider */
+@media (min-width: 992px) {
+  .cms-navbar-actions > .cms-theme-slider {
+    width: 68px;
+    height: 32px;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .cms-theme-slider-toggle {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  .cms-theme-slider-track {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 8px;
+    border-radius: inherit;
+    background: rgba(255,255,255,0.16);
+    color: rgba(255,255,255,0.78);
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.16);
+    transition: background 260ms ease, color 260ms ease;
+  }
+
+  .cms-theme-slider-track i {
+    position: relative;
+    z-index: 1;
+    font-size: 0.76rem;
+    transition: color 260ms ease, transform 260ms ease;
+  }
+
+  .cms-theme-slider-thumb {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 2px 7px rgba(0,0,0,0.22);
+    transition: transform 260ms cubic-bezier(0.34, 1.56, 0.64, 1), background 260ms ease;
+  }
+
+  .cms-theme-slider-toggle:hover .cms-theme-slider-track,
+  .cms-theme-slider-toggle:focus-visible .cms-theme-slider-track {
+    background: rgba(255,255,255,0.25);
+  }
+
+  .cms-theme-slider-toggle:focus-visible {
+    outline: 2px solid var(--cms-accent);
+    outline-offset: 3px;
+    border-radius: 999px;
+  }
+
+  .cms-theme-slider-toggle[aria-checked="true"] .cms-theme-slider-thumb {
+    transform: translateX(36px);
+    background: #334155;
+  }
+
+  .cms-theme-slider-toggle[aria-checked="true"] .cms-theme-slider-moon {
+    color: #fff;
+    transform: scale(1.08);
+  }
+
+  .cms-navbar.scrolled .cms-theme-slider-track {
+    background: rgba(15,23,42,0.1);
+    color: var(--cms-text-light);
+  }
+
+  html[data-theme="dark"] .cms-theme-slider-track {
+    background: rgba(15,23,42,0.5);
+    color: rgba(226,232,240,0.62);
+  }
+
+  html[data-theme="dark"] .cms-theme-slider-toggle[aria-checked="true"] .cms-theme-slider-track {
+    color: rgba(226,232,240,0.9);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cms-navbar-nav,
+  .cms-navbar-actions,
+  .cms-theme-slider-track,
+  .cms-theme-slider-track i,
+  .cms-theme-slider-thumb {
+    transition: none;
+  }
+}
 
 /* -------------------------------------------
    10. Loading Skeleton

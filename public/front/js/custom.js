@@ -14,6 +14,7 @@
     if (!navbar) return;
 
     let lastScroll = 0;
+    const isDesktop = window.matchMedia('(min-width: 992px)');
 
     function onScroll() {
       const scrollY = window.scrollY;
@@ -22,6 +23,18 @@
         navbar.classList.add('scrolled');
       } else {
         navbar.classList.remove('scrolled');
+      }
+
+      if (isDesktop.matches) {
+        if (scrollY <= 50) {
+          navbar.classList.remove('nav-hidden');
+        } else if (scrollY > lastScroll + 5) {
+          navbar.classList.add('nav-hidden');
+        } else if (scrollY < lastScroll - 5) {
+          navbar.classList.remove('nav-hidden');
+        }
+      } else {
+        navbar.classList.remove('nav-hidden');
       }
 
       lastScroll = scrollY;
@@ -156,10 +169,11 @@
      Sync both selectors so every component changes colour together. */
   function initUnifiedDarkMode() {
     const toggles = Array.from(document.querySelectorAll('.cms-theme-option'));
-    if (!toggles.length) return;
+    const slider = document.querySelector('[data-theme-toggle]');
+    if (!toggles.length && !slider) return;
 
     const html = document.documentElement;
-    const lightLabel = html.lang === 'id' ? 'Aktifkan mode terang' : 'Enable light mode';
+    const isIndonesian = html.lang === 'id';
 
     const setTheme = (isDark, persist) => {
       // Use explicit attributes instead of toggleAttribute for compatibility,
@@ -176,6 +190,12 @@
         toggle.setAttribute('aria-pressed', String(isSelected));
         toggle.classList.toggle('active', isSelected);
       });
+      if (slider) {
+        slider.setAttribute('aria-checked', String(isDark));
+        slider.setAttribute('aria-label', isDark
+          ? (isIndonesian ? 'Aktifkan mode terang' : 'Enable light mode')
+          : (isIndonesian ? 'Aktifkan mode gelap' : 'Enable dark mode'));
+      }
       const switches = document.querySelectorAll('.cms-theme-switch');
       switches.forEach(themeSwitch => {
         themeSwitch.classList.remove('theme-changing');
@@ -210,6 +230,11 @@
         setTheme(toggle.getAttribute('data-theme-choice') === 'dark', true);
       });
     });
+    if (slider) {
+      slider.addEventListener('click', () => {
+        setTheme(slider.getAttribute('aria-checked') !== 'true', true);
+      });
+    }
   }
 
   /* -------------------------------------------
