@@ -123,7 +123,7 @@
     <script src="<?php echo base_url(); ?>front/js/views/view.home.js"></script>
 
     <!-- Theme Custom -->
-    <script src="<?php echo base_url(); ?>front/js/custom.js?v=20260903-3"></script>
+    <script src="<?php echo base_url(); ?>front/js/custom.js?v=20260903-4"></script>
 
     <!-- Theme Initialization Files -->
     <script src="<?php echo base_url(); ?>front/js/theme.init.js"></script>

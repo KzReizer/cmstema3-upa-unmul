@@ -122,7 +122,7 @@
     <script src="<?php echo base_url(); ?>front/js/theme.init.js"></script>
 
     <!-- ===== CMS Custom Premium Script ===== -->
-    <script src="<?php echo base_url(); ?>front/js/custom.js?v=20260903-3"></script>
+    <script src="<?php echo base_url(); ?>front/js/custom.js?v=20260903-4"></script>
 
     
 

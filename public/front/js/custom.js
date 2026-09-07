@@ -296,7 +296,7 @@
      8. Scroll Reveal (using Intersection Observer)
      ------------------------------------------- */
   function initScrollReveal() {
-    const elements = document.querySelectorAll('[data-reveal]');
+    const elements = document.querySelectorAll('[data-reveal], .news-card');
     if (!elements.length) return;
 
     const observer = new IntersectionObserver((entries) => {
@@ -318,6 +318,20 @@
     });
 
     elements.forEach(el => observer.observe(el));
+
+    // Reveal elements already in the viewport even when a layout animation
+    // delays the first IntersectionObserver callback.
+    const revealVisible = () => {
+      elements.forEach(el => {
+        if (el.classList.contains('revealed')) return;
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight + 80 && rect.bottom > -80) {
+          el.classList.add('revealed');
+        }
+      });
+    };
+    revealVisible();
+    window.addEventListener('scroll', revealVisible, { passive: true });
   }
 
   /* -------------------------------------------
