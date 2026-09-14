@@ -1,4 +1,4 @@
-/* ============================================================
+﻿/* ============================================================
    cmstema3 - Additional Page Styles
    Premium Modern University Theme
    ============================================================ */
@@ -738,7 +738,7 @@ html[data-theme="dark"] .cms-content-article {
   box-shadow: 0 18px 46px rgba(2, 6, 23, 0.38);
 }
 
-/* Internal pages use one flat dark canvas—no radial/gradient colour bands. */
+/* Internal pages use one flat dark canvasâ€”no radial/gradient colour bands. */
 html[data-theme="dark"] .main,
 html[data-theme="dark"] .cms-content-page,
 html[data-theme="dark"] .cms-content-page::before {
@@ -774,9 +774,356 @@ html[data-theme="dark"] .cms-detail-tag {
     border-radius: 16px;
   }
 
+  .cms-static-page .cms-content-article {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+
   .cms-detail-body {
     font-size: 0.98rem;
     line-height: 1.8;
+  }
+}
+
+/* Final banner treatment: no texture, only a quiet accent that changes by
+   page family while keeping the full rectangular banner intact. */
+.main,
+.cms-content-page,
+.cms-profile-section,
+.cms-partner-section,
+#berita-home,
+html[data-theme="dark"] .main,
+html[data-theme="dark"] .cms-content-page,
+html[data-theme="dark"] .cms-profile-section,
+html[data-theme="dark"] .cms-partner-section,
+html[data-theme="dark"] #berita-home {
+  background-image: none;
+}
+
+.cms-page-banner::before {
+  width: 72px;
+  height: 72px;
+  inset: auto auto 50% 7%;
+  border: 0;
+  border-left: 3px solid rgba(255, 193, 7, 0.8);
+  border-radius: 0;
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: none;
+  transform: translateY(50%);
+  opacity: 1;
+}
+
+.cms-page-banner::after {
+  width: 180px;
+  height: 1px;
+  inset: auto auto calc(50% - 44px) 7%;
+  border: 0;
+  border-radius: 0;
+  background: linear-gradient(90deg, var(--cms-accent), rgba(255, 255, 255, 0));
+}
+
+.cms-page-banner--list::before {
+  width: 92px;
+  height: 10px;
+  inset: auto auto 42px 8%;
+  border: 0;
+  border-top: 2px solid rgba(255, 255, 255, 0.55);
+  border-bottom: 2px solid rgba(255, 193, 7, 0.8);
+  background: transparent;
+  transform: none;
+}
+
+.cms-page-banner--detail::before {
+  width: 90px;
+  height: 90px;
+  inset: auto 9% 50% auto;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 50%;
+  background: transparent;
+  transform: translateY(50%);
+}
+
+.cms-page-banner--static::before {
+  width: 110px;
+  height: 74px;
+  inset: auto 8% 50% auto;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: transparent;
+  transform: translateY(50%) rotate(-8deg);
+}
+
+.cms-page-banner--static::after {
+  width: 64px;
+  inset: auto 10% calc(50% - 40px) auto;
+  background: var(--cms-accent);
+}
+
+.cms-page-banner--publication::before {
+  width: 9px;
+  height: 9px;
+  inset: auto auto calc(50% + 20px) 10%;
+  border: 0;
+  border-radius: 50%;
+  background: var(--cms-accent);
+  box-shadow: 22px 0 0 rgba(255, 255, 255, 0.55), 44px 0 0 rgba(255, 255, 255, 0.3);
+  transform: none;
+}
+
+.cms-page-banner--publication::after {
+  width: 78px;
+  inset: calc(50% + 4px) auto auto 10%;
+  background: rgba(255, 255, 255, 0.45);
+}
+
+.cms-page-banner--search::before {
+  width: 100px;
+  height: 100px;
+  inset: auto 8% 50% auto;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  border-radius: 50%;
+  background: transparent;
+  transform: translateY(50%);
+}
+
+.cms-page-banner--search::after {
+  width: 42px;
+  height: 2px;
+  inset: calc(50% + 32px) calc(8% - 28px) auto auto;
+  background: rgba(255, 255, 255, 0.32);
+  transform: rotate(45deg);
+}
+
+@media (max-width: 575px) {
+  .cms-page-banner::before {
+    transform: translateY(50%) scale(0.75);
+  }
+
+  .cms-page-banner--list::before {
+    transform: none;
+  }
+}
+
+/* Keep texture declarations last so legacy banner ornament rules cannot hide them. */
+.cms-page-banner::before {
+  width: 100%;
+  height: 100%;
+  inset: 0;
+  border: 0;
+  border-radius: 0;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-color: transparent;
+  box-shadow: none;
+  opacity: 0.24;
+  transform: none;
+  z-index: 0;
+}
+
+.cms-page-banner--list::before {
+  background-image: url("../img/texture/texture-wave.jpg") !important;
+}
+
+.cms-page-banner--detail::before {
+  background-image: url("../img/texture/texture-organic.jpg") !important;
+}
+
+.cms-page-banner--static::before {
+  background-image: url("../img/texture/texture-grid.jpg") !important;
+}
+
+.cms-page-banner--publication::before {
+  background-image: url("../img/texture/texture-noise.jpg") !important;
+}
+
+.cms-page-banner--search::before {
+  background-image: url("../img/texture/texture-lines.jpg") !important;
+}
+
+html[data-theme="dark"] .cms-page-banner::before {
+  opacity: 0.18;
+}
+
+/* Browser-served fallback: use the public URL and keep this override last. */
+html body .cms-page-banner,
+html body .cms-page-banner--list {
+  background-image: linear-gradient(rgba(0, 48, 91, 0.76), rgba(0, 48, 91, 0.76)), url("/front/img/texture/texture-wave.jpg") !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: cover !important;
+}
+
+html body .cms-page-banner--detail {
+  background-image: linear-gradient(rgba(0, 48, 91, 0.76), rgba(0, 48, 91, 0.76)), url("/front/img/texture/texture-organic.jpg") !important;
+}
+
+html body .cms-page-banner--static {
+  background-image: linear-gradient(rgba(0, 48, 91, 0.76), rgba(0, 48, 91, 0.76)), url("/front/img/texture/texture-grid.jpg") !important;
+}
+
+html body .cms-page-banner--publication {
+  background-image: linear-gradient(rgba(0, 48, 91, 0.76), rgba(0, 48, 91, 0.76)), url("/front/img/texture/texture-noise.jpg") !important;
+}
+
+html body .cms-page-banner--search {
+  background-image: linear-gradient(rgba(0, 48, 91, 0.76), rgba(0, 48, 91, 0.76)), url("/front/img/texture/texture-lines.jpg") !important;
+}
+
+/* The app is served from /cmstema3 while static files live below /public. */
+.cms-page-banner {
+  background-image: linear-gradient(rgba(0, 48, 91, 0.76), rgba(0, 48, 91, 0.76)), url("/front/img/texture/texture-wave.jpg") !important;
+  background-size: cover !important;
+  background-position: center !important;
+}
+
+.cms-page-banner--detail { background-image: linear-gradient(rgba(0, 48, 91, 0.76), rgba(0, 48, 91, 0.76)), url("/front/img/texture/texture-organic.jpg") !important; }
+.cms-page-banner--static { background-image: linear-gradient(rgba(0, 48, 91, 0.76), rgba(0, 48, 91, 0.76)), url("/front/img/texture/texture-grid.jpg") !important; }
+.cms-page-banner--publication { background-image: linear-gradient(rgba(0, 48, 91, 0.76), rgba(0, 48, 91, 0.76)), url("/front/img/texture/texture-noise.jpg") !important; }
+.cms-page-banner--search { background-image: linear-gradient(rgba(0, 48, 91, 0.76), rgba(0, 48, 91, 0.76)), url("/front/img/texture/texture-lines.jpg") !important; }
+
+/* Direct banner background fallback keeps the texture visible even when a
+   theme stylesheet changes pseudo-element stacking or sizing. */
+.cms-page-banner {
+  background-repeat: no-repeat, no-repeat !important;
+  background-position: center, center !important;
+  background-size: cover, cover !important;
+  background-image:
+    linear-gradient(rgba(0, 48, 91, 0.76), rgba(0, 48, 91, 0.76)),
+    url("../img/texture/texture-wave.jpg") !important;
+}
+
+.cms-page-banner--detail {
+  background-image:
+    linear-gradient(rgba(0, 48, 91, 0.76), rgba(0, 48, 91, 0.76)),
+    url("../img/texture/texture-organic.jpg") !important;
+}
+
+.cms-page-banner--static {
+  background-image:
+    linear-gradient(rgba(0, 48, 91, 0.76), rgba(0, 48, 91, 0.76)),
+    url("../img/texture/texture-grid.jpg") !important;
+}
+
+.cms-page-banner--publication {
+  background-image:
+    linear-gradient(rgba(0, 48, 91, 0.76), rgba(0, 48, 91, 0.76)),
+    url("../img/texture/texture-noise.jpg") !important;
+}
+
+.cms-page-banner--search {
+  background-image:
+    linear-gradient(rgba(0, 48, 91, 0.76), rgba(0, 48, 91, 0.76)),
+    url("../img/texture/texture-lines.jpg") !important;
+}
+
+html[data-theme="dark"] .cms-page-banner {
+  background-image:
+    linear-gradient(rgba(3, 25, 48, 0.82), rgba(3, 25, 48, 0.82)),
+    url("../img/texture/texture-wave.jpg") !important;
+}
+
+/* Final banner texture layer: this comes after the legacy ornament overrides. */
+.cms-page-banner::before {
+  width: 100%;
+  height: 100%;
+  inset: 0;
+  border: 0;
+  border-radius: 0;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  box-shadow: none;
+  opacity: 0.24;
+  transform: none;
+  z-index: 0;
+}
+
+.cms-page-banner--list::before {
+  background-image: url("../img/texture/texture-wave.jpg") !important;
+}
+
+.cms-page-banner--detail::before {
+  background-image: url("../img/texture/texture-organic.jpg") !important;
+}
+
+.cms-page-banner--static::before {
+  background-image: url("../img/texture/texture-grid.jpg") !important;
+}
+
+.cms-page-banner--publication::before {
+  background-image: url("../img/texture/texture-noise.jpg") !important;
+}
+
+.cms-page-banner--search::before {
+  background-image: url("../img/texture/texture-lines.jpg") !important;
+}
+
+html[data-theme="dark"] .cms-page-banner::before {
+  opacity: 0.18;
+}
+
+/* Keep the banner as a complete, calm surface. Page families differ through
+   pattern scale and placement, not through clipped decorative shapes. */
+.cms-page-banner::before {
+  width: 100%;
+  height: 100%;
+  inset: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  background-repeat: repeat, repeat, repeat;
+  background-blend-mode: normal, normal, soft-light;
+  background-size: 23px 23px, 31px 31px, 34px 34px, 34px 34px, 520px 520px;
+  background-position: 0 0, 11px 7px, 0 0, 0 0, 50% 18%;
+}
+
+.cms-page-banner::after {
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  bottom: auto;
+  border: 0;
+  border-radius: 0;
+  background: linear-gradient(115deg, transparent 0 48%, rgba(255, 255, 255, 0.035) 48% 48.2%, transparent 48.2% 68%, rgba(255, 255, 255, 0.025) 68% 68.2%, transparent 68.2%);
+}
+
+.cms-page-banner--list::before {
+  background-position: 0 0, 11px 7px, 0 0, 0 0, 0 0;
+}
+
+.cms-page-banner--detail::before {
+  background-position: 0 0, 11px 7px, 0 0, 0 0, 76% 38%;
+}
+
+.cms-page-banner--static::before {
+  background-position: 0 0, 11px 7px, 0 0, 0 0, 46% 0;
+}
+
+.cms-page-banner--static::after {
+  background: linear-gradient(90deg, transparent 0 32%, rgba(255, 255, 255, 0.045) 32% 32.2%, transparent 32.2% 66%, rgba(255, 255, 255, 0.03) 66% 66.2%, transparent 66.2%);
+}
+
+.cms-page-banner--publication::before {
+  background-position: 0 0, 11px 7px, 0 0, 0 0, 50% 50%;
+}
+
+.cms-page-banner--publication::after {
+  background: repeating-linear-gradient(155deg, transparent 0 46px, rgba(255, 255, 255, 0.045) 47px 48px);
+}
+
+.cms-page-banner--search::before {
+  background-position: 0 0, 11px 7px, 0 0, 0 0, 100% 0;
+}
+
+.cms-page-banner--search::after {
+  background: repeating-linear-gradient(45deg, transparent 0 30px, rgba(255, 255, 255, 0.045) 31px 32px);
+}
+
+@media (max-width: 575px) {
+  .cms-page-banner::before {
+    background-size: 34px 34px, 34px 34px, 360px 360px;
+    background-position: 0 0, 0 0, 50% 0;
   }
 }
 
@@ -791,7 +1138,7 @@ html[data-theme="dark"] .cms-detail-tag {
 .cms-partner-section,
 #berita-home {
   background-color: #f8fafc;
-  background-image: url('../img/patterns/subtle_grunge.png');
+  background-image: none;
   background-repeat: repeat;
   background-size: 400px 400px;
   background-blend-mode: soft-light;
@@ -801,30 +1148,78 @@ html[data-theme="dark"] .cms-detail-tag {
 /* A 4% technical grid is reserved for the page banner only. */
 .cms-page-banner {
   background: #07528f;
-  min-height: 320px;
+  min-height: 250px;
 }
 
 .cms-page-banner::before {
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.055) 1px, transparent 1px);
-  background-size: 34px 34px;
-  opacity: 1;
+    radial-gradient(circle at 18% 22%, rgba(255, 255, 255, 0.10) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 78% 68%, rgba(255, 255, 255, 0.07) 0 1px, transparent 1.5px),
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    none;
+  background-size: 23px 23px, 31px 31px, 34px 34px, 34px 34px, 520px 520px;
+  background-position: 0 0, 11px 7px, 0 0, 0 0, 50% 18%;
+  opacity: 0.7;
 }
 
 .cms-page-banner-overlay {
-  background: rgba(0, 48, 91, 0.5);
+  background: rgba(0, 48, 91, 0.64);
 }
 
 .cms-page-banner-content {
-  padding-top: 142px;
-  padding-bottom: 68px;
+  padding-top: 104px;
+  padding-bottom: 38px;
 }
 
 .cms-page-banner-content h1 {
   max-width: 900px;
   margin-left: auto;
   margin-right: auto;
+}
+
+/* A quiet regional weave keeps empty page surfaces connected to UNMUL
+   without competing with the page title or content cards. */
+.cms-content-page {
+  position: relative;
+  isolation: isolate;
+  background-image:
+    none;
+  background-repeat: repeat, repeat;
+  background-size: 400px 400px, 520px 520px;
+  background-blend-mode: soft-light, soft-light;
+}
+
+.cms-content-page--list,
+.cms-page-banner--list {
+  --cms-page-pattern: none;
+}
+
+.cms-content-page--detail,
+.cms-page-banner--detail {
+  --cms-page-pattern: none;
+}
+
+.cms-content-page--static,
+.cms-page-banner--static {
+  --cms-page-pattern: none;
+}
+
+.cms-content-page--publication,
+.cms-page-banner--publication {
+  --cms-page-pattern: none;
+}
+
+.cms-content-page--search,
+.cms-page-banner--search {
+  --cms-page-pattern: none;
+}
+
+.cms-content-page[class*="cms-content-page--"] {
+  background-image:
+    none;
+  background-size: 400px 400px, 520px 520px;
+  background-position: center, 72px 34px;
 }
 
 html[data-theme="dark"] .main,
@@ -843,15 +1238,217 @@ html[data-theme="dark"] .cms-page-banner {
 html[data-theme="dark"] .cms-page-banner::before {
   background-image:
     linear-gradient(rgba(191, 219, 254, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(191, 219, 254, 0.04) 1px, transparent 1px);
+    linear-gradient(90deg, rgba(191, 219, 254, 0.04) 1px, transparent 1px),
+    none;
+  background-blend-mode: normal, normal, soft-light;
+}
+
+/* Local textures add depth to banners while the blue veil keeps headings clear. */
+.cms-page-banner::before {
+  opacity: 0.28;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-blend-mode: normal;
+}
+
+.cms-page-banner--list::before {
+  background-image: url("../img/texture/texture-wave.jpg");
+}
+
+.cms-page-banner--detail::before {
+  background-image: url("../img/texture/texture-organic.jpg");
+}
+
+.cms-page-banner--static::before {
+  background-image: url("../img/texture/texture-grid.jpg");
+}
+
+.cms-page-banner--publication::before {
+  background-image: url("../img/texture/texture-noise.jpg");
+}
+
+.cms-page-banner--search::before {
+  background-image: url("../img/texture/texture-lines.jpg");
+}
+
+html[data-theme="dark"] .cms-page-banner::before {
+  opacity: 0.22;
+}
+
+html[data-theme="dark"] .cms-content-page {
+  background-image:
+    none;
+  background-size: 520px 520px;
+  background-blend-mode: soft-light;
+}
+
+html[data-theme="dark"] .cms-content-page[class*="cms-content-page--"] {
+  background-image: none;
+  background-size: 520px 520px;
 }
 
 @media (max-width: 575px) {
   .cms-page-banner {
-    min-height: 260px;
+    min-height: 220px;
   }
 
   .cms-page-banner-content {
-    padding: 112px 24px 44px;
+    padding: 96px 24px 34px;
   }
+
+  .cms-content-page[class*="cms-content-page--"] {
+    background-size: 340px 340px;
+    background-position: center, 24px 28px;
+  }
+
+  .cms-page-banner::before {
+    background-size: 23px 23px, 31px 31px, 34px 34px, 34px 34px, 360px 360px;
+    background-position: 0 0, 11px 7px, 0 0, 0 0, 50% 0;
+  }
+}
+
+/* Final no-texture override. */
+.main,
+.cms-content-page,
+.cms-profile-section,
+.cms-partner-section,
+#berita-home,
+html[data-theme="dark"] .main,
+html[data-theme="dark"] .cms-content-page,
+html[data-theme="dark"] .cms-profile-section,
+html[data-theme="dark"] .cms-partner-section,
+html[data-theme="dark"] #berita-home {
+  background-image: none;
+}
+
+.cms-page-banner::before {
+  width: 72px;
+  height: 72px;
+  inset: auto auto 50% 7%;
+  border: 0;
+  border-left: 3px solid rgba(255, 193, 7, 0.8);
+  border-radius: 0;
+  background: rgba(255, 255, 255, 0.06);
+  background-image: none;
+  box-shadow: none;
+  transform: translateY(50%);
+  opacity: 1;
+}
+
+.cms-page-banner::after {
+  width: 180px;
+  height: 1px;
+  inset: auto auto calc(50% - 44px) 7%;
+  border: 0;
+  border-radius: 0;
+  background: linear-gradient(90deg, var(--cms-accent), rgba(255, 255, 255, 0));
+}
+
+.cms-page-banner--list::before {
+  width: 92px;
+  height: 10px;
+  inset: auto auto 42px 8%;
+  border: 0;
+  border-top: 2px solid rgba(255, 255, 255, 0.55);
+  border-bottom: 2px solid rgba(255, 193, 7, 0.8);
+  background: transparent;
+  transform: none;
+}
+
+.cms-page-banner--detail::before {
+  width: 90px;
+  height: 90px;
+  inset: auto 9% 50% auto;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 50%;
+  background: transparent;
+  transform: translateY(50%);
+}
+
+.cms-page-banner--static::before {
+  width: 110px;
+  height: 74px;
+  inset: auto 8% 50% auto;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: transparent;
+  transform: translateY(50%) rotate(-8deg);
+}
+
+.cms-page-banner--static::after {
+  width: 64px;
+  inset: auto 10% calc(50% - 40px) auto;
+  background: var(--cms-accent);
+}
+
+.cms-page-banner--publication::before {
+  width: 9px;
+  height: 9px;
+  inset: auto auto calc(50% + 20px) 10%;
+  border: 0;
+  border-radius: 50%;
+  background: var(--cms-accent);
+  box-shadow: 22px 0 0 rgba(255, 255, 255, 0.55), 44px 0 0 rgba(255, 255, 255, 0.3);
+  transform: none;
+}
+
+.cms-page-banner--publication::after {
+  width: 78px;
+  inset: calc(50% + 4px) auto auto 10%;
+  background: rgba(255, 255, 255, 0.45);
+}
+
+.cms-page-banner--search::before {
+  width: 100px;
+  height: 100px;
+  inset: auto 8% 50% auto;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  border-radius: 50%;
+  background: transparent;
+  transform: translateY(50%);
+}
+
+.cms-page-banner--search::after {
+  width: 42px;
+  height: 2px;
+  inset: calc(50% + 32px) calc(8% - 28px) auto auto;
+  background: rgba(255, 255, 255, 0.32);
+  transform: rotate(45deg);
+}
+
+@media (max-width: 575px) {
+  .cms-page-banner::before {
+    transform: translateY(50%) scale(0.75);
+  }
+
+  .cms-page-banner--list::before {
+    transform: none;
+  }
+}
+
+/* Final texture layer; keep this block after all legacy banner rules. */
+.cms-page-banner::before {
+  width: 100%;
+  height: 100%;
+  inset: 0;
+  border: 0;
+  border-radius: 0;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-color: transparent;
+  box-shadow: none;
+  opacity: 0.24;
+  transform: none;
+  z-index: 0;
+}
+
+.cms-page-banner--list::before { background-image: url("../img/texture/texture-wave.jpg") !important; }
+.cms-page-banner--detail::before { background-image: url("../img/texture/texture-organic.jpg") !important; }
+.cms-page-banner--static::before { background-image: url("../img/texture/texture-grid.jpg") !important; }
+.cms-page-banner--publication::before { background-image: url("../img/texture/texture-noise.jpg") !important; }
+.cms-page-banner--search::before { background-image: url("../img/texture/texture-lines.jpg") !important; }
+
+html[data-theme="dark"] .cms-page-banner::before {
+  opacity: 0.18;
 }

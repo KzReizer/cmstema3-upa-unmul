@@ -14,10 +14,59 @@
     if (!navbar) return;
 
     let lastScroll = 0;
+    let idleTimer = null;
+    let scrollStopTimer = null;
+    let isScrolling = false;
+    const idleDelay = 7000;
     const isDesktop = window.matchMedia('(min-width: 992px)');
+
+    function clearIdleTimer() {
+      if (idleTimer !== null) {
+        window.clearTimeout(idleTimer);
+        idleTimer = null;
+      }
+    }
+
+    function showNavbar() {
+      clearIdleTimer();
+      navbar.classList.remove('nav-hidden');
+      navbar.classList.remove('nav-idle-hidden');
+      scheduleIdleHide();
+    }
+
+    function showNavbarFromPointer() {
+      if (isScrolling) return;
+      showNavbar();
+    }
+
+    function scheduleIdleHide() {
+      clearIdleTimer();
+      if (!isDesktop.matches || navbar.classList.contains('nav-hidden')) return;
+
+      idleTimer = window.setTimeout(() => {
+        const hasOpenControl = navbar.matches(':focus-within') ||
+          navbar.querySelector('.open, .is-open, .cms-nav-search.open');
+        if (!hasOpenControl) {
+          navbar.classList.add('nav-idle-hidden');
+        }
+      }, idleDelay);
+    }
 
     function onScroll() {
       const scrollY = window.scrollY;
+
+      if (isDesktop.matches) {
+        isScrolling = true;
+        if (scrollStopTimer !== null) {
+          window.clearTimeout(scrollStopTimer);
+        }
+        scrollStopTimer = window.setTimeout(() => {
+          isScrolling = false;
+          scheduleIdleHide();
+        }, 140);
+      } else {
+        isScrolling = false;
+      }
       
       if (scrollY > 50) {
         navbar.classList.add('scrolled');
@@ -37,12 +86,36 @@
         navbar.classList.remove('nav-hidden');
       }
 
+      if (isDesktop.matches) {
+        if (scrollY > lastScroll + 5) {
+          clearIdleTimer();
+        } else if (!isScrolling) {
+          scheduleIdleHide();
+        }
+      } else {
+        clearIdleTimer();
+        navbar.classList.remove('nav-idle-hidden');
+      }
+
       lastScroll = scrollY;
     }
 
     window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('pointermove', showNavbarFromPointer, { passive: true });
+    window.addEventListener('keydown', showNavbar);
+    window.addEventListener('resize', () => {
+      if (isDesktop.matches) {
+        showNavbar();
+      } else {
+        clearIdleTimer();
+        navbar.classList.remove('nav-idle-hidden');
+      }
+    });
+
+    navbar.addEventListener('focusin', showNavbar);
     // Initial check
     onScroll();
+    scheduleIdleHide();
   }
 
   /* -------------------------------------------

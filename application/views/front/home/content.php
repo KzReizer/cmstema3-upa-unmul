@@ -160,11 +160,11 @@
         <section class="cms-section" style="background:var(--cms-bg-card);">
             <div class="container">
                 <div class="text-center cms-section-heading">
-                    <span class="cms-eyebrow"><?= $lang == 'ID' ? 'Pimpinan' : 'Leadership' ?></span>
-                    <h2><?= $lang == 'ID' ? 'Kata <strong>Pimpinan</strong>' : '<strong>Message</strong> from Leadership' ?></h2>
+                    <span class="cms-eyebrow"><?= $lang == 'ID' ? 'Ucapan' : 'Quotes' ?></span>
+                    <h2><?= $lang == 'ID' ? '<strong>Kata</strong> Mereka' : '<strong>What </strong> They Say' ?></h2>
                 </div>
                 <div class="row justify-content-center">
-                    <div class="col-lg-8 text-center">
+                    <div class="col-lg-8 text-center">  
                         <div class="owl-carousel owl-theme" data-plugin-options="{'items': 1, 'loop': true, 'autoplay': true, 'autoplayTimeout': 5000}">
                             <?php foreach ($quote as $quo) { ?>
                                 <div>

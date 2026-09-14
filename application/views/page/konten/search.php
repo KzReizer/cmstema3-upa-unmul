@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?><div role="main" class="main">
 
-    <section class="cms-page-banner">
+    <section class="cms-page-banner cms-page-banner--search">
         
         <div class="container cms-page-banner-content">
             
@@ -10,7 +10,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         </div>
     </section>
 
-    <div class="container cms-content-page">
+    <div class="container cms-content-page cms-content-page--search">
 
         <div class="row">
             <div class="col-12">
@@ -80,4 +80,3 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     </div>
 
 </div>
-

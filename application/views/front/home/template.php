@@ -51,8 +51,8 @@
     <?php } ?>
 
     <!-- ===== CMS Custom Premium Styles ===== -->
-    <link rel="stylesheet" href="<?php echo base_url(); ?>front/css/custom.css">
-    <link rel="stylesheet" href="<?php echo base_url(); ?>front/css/custom1.css?v=20260821-16">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>front/css/custom.css?v=20260908-21">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>front/css/custom1.css?v=20260910-7">
     <link rel="stylesheet" href="<?php echo base_url(); ?>front/css/drawer.css?v=20260903-4">
 
     <!-- Head Libs -->
@@ -122,7 +122,7 @@
     <script src="<?php echo base_url(); ?>front/js/theme.init.js"></script>
 
     <!-- ===== CMS Custom Premium Script ===== -->
-    <script src="<?php echo base_url(); ?>front/js/custom.js?v=20260903-4"></script>
+    <script src="<?php echo base_url(); ?>front/js/custom.js?v=20260908-23"></script>
 
     
 
