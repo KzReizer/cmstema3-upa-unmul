@@ -992,7 +992,7 @@ html body .cms-page-banner--search {
     url("../img/texture/texture-wave.jpg") !important;
 }
 
-.cms-page-banner--detail {
+html body .cms-page-banner--detail {
   background-image:
     linear-gradient(rgba(0, 48, 91, 0.76), rgba(0, 48, 91, 0.76)),
     url("../img/texture/texture-organic.jpg") !important;
@@ -1042,7 +1042,7 @@ html[data-theme="dark"] .cms-page-banner {
   background-image: url("../img/texture/texture-wave.jpg") !important;
 }
 
-.cms-page-banner--detail::before {
+html body .cms-page-banner--detail::before {
   background-image: url("../img/texture/texture-organic.jpg") !important;
 }
 
@@ -1196,7 +1196,7 @@ html[data-theme="dark"] .cms-page-banner::before {
 }
 
 .cms-content-page--detail,
-.cms-page-banner--detail {
+html body .cms-page-banner--detail {
   --cms-page-pattern: none;
 }
 
@@ -1256,7 +1256,7 @@ html[data-theme="dark"] .cms-page-banner::before {
   background-image: url("../img/texture/texture-wave.jpg");
 }
 
-.cms-page-banner--detail::before {
+html body .cms-page-banner--detail::before {
   background-image: url("../img/texture/texture-organic.jpg");
 }
 
@@ -1451,4 +1451,20 @@ html[data-theme="dark"] #berita-home {
 
 html[data-theme="dark"] .cms-page-banner::before {
   opacity: 0.18;
+}
+
+/* Detail banners use a dedicated low-contrast texture so the title remains
+   readable without repeating the textures used by other page families. */
+html body .cms-page-banner--detail {
+  background-image:
+    linear-gradient(rgba(0, 48, 91, 0.56), rgba(0, 48, 91, 0.06)),
+    url("../img/texture/5liiBCVhSLHflGEuVBRIVzTfDSYrZNVjYvyK_86Vhw2N2_UN7-3UiDgPUmovte5seaYLj2CVYD7etCDBzT6KBiGgOeJ-uvGUlwa_Dl9bJrxlVR11l4J-XLyTd2KtwdjdfS3_jx9l3FUfMos0O2icYyuTpMjFoQKfEp3e_vMhMfFK9okYwC9oQv7l0BIa-xVP.jpg") !important;
+  background-repeat: no-repeat, no-repeat !important;
+  background-position: center, center !important;
+  background-size: cover, cover !important;
+}
+
+html body .cms-page-banner--detail::before {
+  background-image: none !important;
+  opacity: 0 !important;
 }

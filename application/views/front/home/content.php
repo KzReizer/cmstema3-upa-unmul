@@ -67,16 +67,28 @@
     <?php if ($master->statTemaId != NULL && $stat != false) { ?>
         <section class="cms-section cms-stat-section">
             <div class="container">
-                <div class="text-center cms-section-heading">
-                    <span class="cms-eyebrow"><?= $lang == 'ID' ? 'Capaian' : 'Highlights' ?></span>
-                    <h2><?= $lang == 'ID' ? 'Fakultas dalam <strong>Angka</strong>' : 'Faculty in <strong>Numbers</strong>' ?></h2>
+                <div class="cms-stat-heading">
+                    <div>
+                        <span class="cms-eyebrow"><?= $lang == 'ID' ? 'Capaian' : 'Highlights' ?></span>
+                        <h2><?= $lang == 'ID' ? 'Fakultas dalam <strong>Angka</strong>' : 'Faculty in <strong>Numbers</strong>' ?></h2>
+                    </div>
+                    <p class="cms-stat-intro">
+                        <?= $lang == 'ID'
+                            ? 'Ringkasan kontribusi dan perkembangan fakultas yang terus bertumbuh bersama sivitas akademika.'
+                            : 'A snapshot of the faculty’s growing contribution and progress, shaped by our academic community.' ?>
+                    </p>
                 </div>
                 <div class="cms-stat-grid">
-                    <?php foreach ($stat as $sta) { ?>
+                    <?php foreach ($stat as $index => $sta) { ?>
                         <div class="cms-stat-card" data-reveal>
-                            <i class="<?= $sta->refstatIcon ?>"></i>
+                            <div class="cms-stat-card-top">
+                                <span class="cms-stat-index"><?= sprintf('%02d', $index + 1) ?></span>
+                                <i class="<?= $sta->refstatIcon ?>" aria-hidden="true"></i>
+                            </div>
                             <strong data-to="<?= $sta->statJumlah ?>">0</strong>
+                            <span class="cms-stat-card-line" aria-hidden="true"></span>
                             <label><?= $sta->refstatNamaID ?></label>
+                            <span class="cms-stat-card-glow" aria-hidden="true"></span>
                         </div>
                     <?php } ?>
                 </div>

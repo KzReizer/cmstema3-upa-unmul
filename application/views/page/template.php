@@ -54,7 +54,7 @@
 
     <!-- ===== CMS Custom Premium Styles ===== -->
     <link rel="stylesheet" href="<?php echo base_url(); ?>front/css/custom.css?v=20260908-21">
-    <link rel="stylesheet" href="<?php echo base_url(); ?>front/css/custom1.css?v=20260910-7">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>front/css/custom1.css?v=20260914-3">
     <link rel="stylesheet" href="<?php echo base_url(); ?>front/css/drawer.css?v=20260903-4">
 
     <!-- Head Libs -->

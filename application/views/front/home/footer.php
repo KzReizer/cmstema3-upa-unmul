@@ -49,15 +49,26 @@
         $mapLink = '';
         if (!empty($master->footMap)) {
             $mapLink = trim($master->footMap);
+            // Admin may enter either a Google Maps link or an iframe embed URL.
+            if (preg_match('/<iframe[^>]+src=["\']([^"\']+)["\']/i', $mapLink, $matches)) {
+                $mapLink = trim(html_entity_decode($matches[1], ENT_QUOTES, 'UTF-8'));
+            }
+
             if (stripos($mapLink, 'maps/embed') !== false) {
                 $mapEmbed = $mapLink;
-            } elseif (!empty($master->footAlamat)) {
-                $mapEmbed = 'https://www.google.com/maps?q='.urlencode($master->footAlamat).'&amp;output=embed';
+            } else {
+                $mapQuery = $mapLink;
+                $parsedMapUrl = parse_url($mapLink);
+                if (!empty($parsedMapUrl['query'])) {
+                    parse_str($parsedMapUrl['query'], $mapParameters);
+                    if (!empty($mapParameters['q'])) {
+                        $mapQuery = $mapParameters['q'];
+                    } elseif (!empty($mapParameters['query'])) {
+                        $mapQuery = $mapParameters['query'];
+                    }
+                }
+                $mapEmbed = 'https://www.google.com/maps?q='.urlencode($mapQuery).'&amp;output=embed';
             }
-        } elseif (!empty($master->footMapEmbed)) {
-            $mapEmbed = $master->footMapEmbed;
-        } elseif (!empty($master->footLat) && !empty($master->footLng)) {
-            $mapEmbed = 'https://www.google.com/maps?q='.urlencode($master->footLat.','.$master->footLng).'&amp;output=embed';
         }
 
         $copyrightText = '';
@@ -142,7 +153,7 @@
                     <div class="cms-footer-widget">
                         <h4><?= $lang == 'ID' ? 'Lokasi' : 'Location' ?></h4>
                         <div class="cms-footer-map">
-                            <iframe src="<?= $mapEmbed ?>" allow="fullscreen" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="<?= $lang == 'ID' ? 'Peta lokasi kampus yang dapat digeser dan dizoom' : 'Interactive campus location map' ?>"></iframe>
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d1220.8970629992361!2d117.15819937915062!3d-0.4680705142885659!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2df6799771161c2d%3A0x4b6dd6948fb89f5b!2sUNMUL%20HUB!5e0!3m2!1sen!2sid!4v1789349951206!5m2!1sen!2sid" width="800" height="600" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
                         </div>
                         <?php if (!empty($mapLink)): ?>
                             <a class="cms-footer-map-link" href="<?= $mapLink ?>" target="_blank" rel="noopener noreferrer">

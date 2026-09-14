@@ -34,8 +34,8 @@
       scheduleIdleHide();
     }
 
-    function showNavbarFromPointer() {
-      if (isScrolling) return;
+    function showNavbarFromPointer(event) {
+      if (isScrolling || event.clientY > 24) return;
       showNavbar();
     }
 
