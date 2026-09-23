@@ -663,7 +663,63 @@
   }
 
   /* -------------------------------------------
-     12. Initialize Everything
+     12. Testimonial pages
+     ------------------------------------------- */
+  function initTestimonialsSlider() {
+    const sections = document.querySelectorAll('.cms-testimonials-section');
+    sections.forEach(function(section) {
+      if (section.dataset.testimonialsInitialized) return;
+
+      const cards = Array.from(section.querySelectorAll('.cms-testimonial-card'));
+      const previous = section.querySelector('.cms-testimonial-prev');
+      const next = section.querySelector('.cms-testimonial-next');
+      const pageLabel = section.querySelector('.cms-testimonials-page');
+      let page = 0;
+
+      if (!cards.length || !previous || !next) return;
+      section.dataset.testimonialsInitialized = 'true';
+
+      function getPageSize() {
+        return window.matchMedia('(max-width: 600px)').matches ? 3 : 6;
+      }
+
+      function renderPage() {
+        const pageSize = getPageSize();
+        const pageCount = Math.ceil(cards.length / pageSize);
+        page = Math.min(page, pageCount - 1);
+        const first = page * pageSize;
+        cards.forEach(function(card, index) {
+          const visible = index >= first && index < first + pageSize;
+          card.hidden = !visible;
+        });
+
+        previous.disabled = page === 0;
+        next.disabled = page >= pageCount - 1;
+        previous.setAttribute('aria-disabled', page === 0 ? 'true' : 'false');
+        next.setAttribute('aria-disabled', page >= pageCount - 1 ? 'true' : 'false');
+        if (pageLabel) pageLabel.textContent = pageCount > 1 ? (page + 1) + ' / ' + pageCount : '';
+      }
+
+      previous.addEventListener('click', function() {
+        if (page > 0) {
+          page -= 1;
+          renderPage();
+        }
+      });
+      next.addEventListener('click', function() {
+        const pageCount = Math.ceil(cards.length / getPageSize());
+        if (page < pageCount - 1) {
+          page += 1;
+          renderPage();
+        }
+      });
+      renderPage();
+      window.addEventListener('resize', renderPage);
+    });
+  }
+
+  /* -------------------------------------------
+     13. Initialize Everything
      ------------------------------------------- */
   $(document).ready(function() {
     initNavbar();
@@ -679,6 +735,7 @@
     initSkeletons();
     initSearchOverlay();
     initLanguageDropdown();
+    initTestimonialsSlider();
 
     // Initialize gallery lightbox if Magnific Popup is available
     if (typeof jQuery !== 'undefined' && typeof jQuery.fn.magnificPopup !== 'undefined') {

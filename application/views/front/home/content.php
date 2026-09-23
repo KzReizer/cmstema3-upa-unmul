@@ -72,11 +72,7 @@
                         <span class="cms-eyebrow"><?= $lang == 'ID' ? 'Capaian' : 'Highlights' ?></span>
                         <h2><?= $lang == 'ID' ? 'Fakultas dalam <strong>Angka</strong>' : 'Faculty in <strong>Numbers</strong>' ?></h2>
                     </div>
-                    <p class="cms-stat-intro">
-                        <?= $lang == 'ID'
-                            ? 'Ringkasan kontribusi dan perkembangan fakultas yang terus bertumbuh bersama sivitas akademika.'
-                            : 'A snapshot of the faculty’s growing contribution and progress, shaped by our academic community.' ?>
-                    </p>
+                    
                 </div>
                 <div class="cms-stat-grid">
                     <?php foreach ($stat as $index => $sta) { ?>
@@ -168,28 +164,48 @@
     <!-- ============================================================
     7. QUOTE / TESTIMONIAL
     ============================================================ -->
-    <?php if (!empty($master->quoteTemaId) && $quote != false) { ?>
-        <section class="cms-section" style="background:var(--cms-bg-card);">
+    <?php if ($quote != false && !empty($quote)) { ?>
+        <section class="cms-section cms-testimonials-section" id="testimonials">
             <div class="container">
-                <div class="text-center cms-section-heading">
+                <div class="cms-section-heading cms-testimonials-heading">
                     <span class="cms-eyebrow"><?= $lang == 'ID' ? 'Ucapan' : 'Quotes' ?></span>
                     <h2><?= $lang == 'ID' ? '<strong>Kata</strong> Mereka' : '<strong>What </strong> They Say' ?></h2>
+                    <p><?= $lang == 'ID' ? 'Cerita dan dukungan dari keluarga besar Universitas Mulawarman.' : 'Stories and support from the Universitas Mulawarman community.' ?></p>
                 </div>
-                <div class="row justify-content-center">
-                    <div class="col-lg-8 text-center">  
-                        <div class="owl-carousel owl-theme" data-plugin-options="{'items': 1, 'loop': true, 'autoplay': true, 'autoplayTimeout': 5000}">
-                            <?php foreach ($quote as $quo) { ?>
-                                <div>
-                                    <div style="padding:20px;">
-                                        <img src="<?= $quo->quoteFile ?>" alt="<?= $quo->quoteNama ?>" style="width:100px;height:100px;border-radius:50%;object-fit:cover;margin:0 auto 20px;display:block;border:4px solid var(--cms-primary-light);">
-                                        <p style="font-size:1.1rem;font-style:italic;color:var(--cms-text);max-width:700px;margin:0 auto 20px;">"<?= $quo->{'quoteIsi' . $lang} ?>"</p>
-                                        <h5 style="margin-bottom:4px;"><?= $quo->quoteNama ?></h5>
-                                        <span style="font-size:0.85rem;color:var(--cms-text-light);"><?= $quo->quoteJabatan ?></span>
-                                    </div>
+                <div class="cms-testimonials-grid">
+                    <?php foreach ($quote as $index => $quo) {
+                            $quoteName = htmlspecialchars($quo->quoteNama, ENT_QUOTES, 'UTF-8');
+                            $quoteRole = htmlspecialchars($quo->quoteJabatan, ENT_QUOTES, 'UTF-8');
+                            $quoteText = htmlspecialchars($quo->{'quoteIsi' . $lang}, ENT_QUOTES, 'UTF-8');
+                            $quoteImage = !empty($quo->quoteFile) ? htmlspecialchars($quo->quoteFile, ENT_QUOTES, 'UTF-8') : '';
+                    ?>
+                        <article class="cms-testimonial-card" data-testimonial-index="<?= $index ?>">
+                            <div class="cms-testimonial-card-inner">
+                                <div class="cms-testimonial-card-top">
+                                    <?php if ($quoteImage) { ?>
+                                        <img class="cms-testimonial-avatar" src="<?= $quoteImage ?>" alt="<?= $quoteName ?>" loading="lazy">
+                                    <?php } else { ?>
+                                        <span class="cms-testimonial-avatar cms-testimonial-avatar-fallback" aria-hidden="true"><?= strtoupper(mb_substr($quo->quoteNama, 0, 1)) ?></span>
+                                    <?php } ?>
+                                    <span class="cms-testimonial-quote-mark" aria-hidden="true">“</span>
                                 </div>
-                            <?php } ?>
-                        </div>
-                    </div>
+                                <blockquote class="cms-testimonial-quote"><?= $quoteText ?></blockquote>
+                                <footer class="cms-testimonial-author">
+                                    <strong><?= $quoteName ?></strong>
+                                    <span><?= $quoteRole ?></span>
+                                </footer>
+                            </div>
+                        </article>
+                    <?php } ?>
+                </div>
+                <div class="cms-testimonials-controls" aria-label="<?= $lang == 'ID' ? 'Navigasi testimonial' : 'Testimonial navigation' ?>">
+                    <button type="button" class="cms-testimonial-control cms-testimonial-prev" aria-label="<?= $lang == 'ID' ? 'Enam quote sebelumnya' : 'Previous six quotes' ?>">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                    </button>
+                    <span class="cms-testimonials-page" aria-live="polite"></span>
+                    <button type="button" class="cms-testimonial-control cms-testimonial-next" aria-label="<?= $lang == 'ID' ? 'Enam quote berikutnya' : 'Next six quotes' ?>">
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    </button>
                 </div>
             </div>
         </section>
